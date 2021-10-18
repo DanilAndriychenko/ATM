@@ -1,6 +1,10 @@
+#include "ATM.h"
 
-int main(int argc, char* argv[])
+void ATM::printAvailableCommandsWithDescription(const State state) const
 {
-    
-    return 0;
+	const auto availableCommands = _stateToAvailableCommands.at(state);
+	for (auto availableCommand : availableCommands)
+	{
+		cout << _commandToDescription.at(availableCommand) << '\n';
+	}
 }
