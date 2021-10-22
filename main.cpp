@@ -2,9 +2,9 @@
 
 using std::string;
 
+// Main is the function that called every time when ATM powered on
 int main(int argc, char* argv[])
 {
-	const string catsBank("Cats Bank");
-    ATM atm(catsBank);
+    ATM atm{};
 	return 0;
 }
