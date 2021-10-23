@@ -5,7 +5,7 @@
 class Maintenance final : public State
 {
 public:
-	explicit Maintenance(): State(_comsToPtrs) {}
+	//explicit Maintenance(): State() {}
 	Maintenance(const Maintenance& other) = delete;
 	Maintenance& operator=(const Maintenance& other) = delete;
 	~Maintenance() override {}

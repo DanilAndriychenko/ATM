@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "Utils.h"
+#include "../Utils.h"
 
 #include <string>
 #include <unordered_map>
@@ -11,7 +11,7 @@ using std::string;
 class State
 {
 public:
-	using CommandPtr = void (State::*)(utils::Args);
+	using CommandPtr = void (*)(utils::Args);
 	struct Command;
 	using ComsToPtrs = unordered_map<Command, CommandPtr>;
 	explicit State(ComsToPtrs& comsToDesc): _commandsToPtrs(comsToDesc) {}
