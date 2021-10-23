@@ -508,7 +508,6 @@
       <SDLCheck>true</SDLCheck>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
-    <ClCompile Include="States\StateMachine.cpp" />
     <ClCompile Include="Utilities\Utils.cpp">
       <RuntimeLibrary>MultiThreadedDebugDll</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -625,7 +624,6 @@
     <ClInclude Include="States\Authorization.h" />
     <ClInclude Include="States\Maintenance.h" />
     <ClInclude Include="States\State.h" />
-    <ClInclude Include="States\StateMachine.h" />
     <ClInclude Include="Utilities\Utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
