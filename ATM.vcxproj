@@ -299,6 +299,7 @@
       <SDLCheck>true</SDLCheck>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
+    <ClCompile Include="Entities\JSONItem.cpp" />
     <ClCompile Include="Entities\User.cpp">
       <RuntimeLibrary>MultiThreadedDebugDll</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -582,6 +583,7 @@
     <ClInclude Include="ATM.h" />
     <ClInclude Include="Entities\ATMState.h" />
     <ClInclude Include="Entities\Banknotes.h" />
+    <ClInclude Include="Entities\JSONItem.h" />
     <ClInclude Include="Entities\User.h" />
     <ClInclude Include="rapidjson\allocators.h" />
     <ClInclude Include="rapidjson\cursorstreamwrapper.h" />
