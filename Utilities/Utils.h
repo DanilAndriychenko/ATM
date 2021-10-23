@@ -14,9 +14,9 @@ namespace utils
 	T* strTo(const std::string&);
 
 	template<int>
-	int* strTo(const std::string&)
+	int* strTo(const std::string& string)
 	{
-		
+		stoi(string)
 	}
 
 	unsigned hashStr(const char* s);
