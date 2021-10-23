@@ -72,6 +72,7 @@ private:
 	string _nameOfBankToWhichATMBelongs;
 	vector<Account> _accounts;
 
+
 	// Нужно хранить путь к файлу с конфигом,
 	// считать его в формате джейсон например и распихать по мапам, векторам и переменным
 };

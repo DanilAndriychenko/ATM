@@ -1,10 +1,14 @@
 #pragma once
+
 #include <string>
 #include <vector>
 
-using functionArg = std::string;
 
-namespace Utilities
+namespace utils
 {
-	std::pair<std::string, std::vector<functionArg>> parseLine(const std::string&);
+	using Args = std::vector<std::string>;
+	
+	std::pair<std::string, Args> parseLine(const std::string&);
+
+	unsigned hashStr(const char* s);
 }

@@ -159,10 +159,22 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ATM.cpp" />
+    <ClCompile Include="ATMState.cpp" />
+    <ClCompile Include="Banknotes.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Maintenance.cpp" />
+    <ClCompile Include="State.cpp" />
+    <ClCompile Include="User.cpp" />
+    <ClCompile Include="Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ATM.h" />
+    <ClInclude Include="ATMState.h" />
+    <ClInclude Include="Banknotes.h" />
+    <ClInclude Include="Maintenance.h" />
+    <ClInclude Include="State.h" />
+    <ClInclude Include="User.h" />
+    <ClInclude Include="Utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
