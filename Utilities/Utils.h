@@ -8,9 +8,8 @@ namespace utils
 {
 	using Args = std::vector<std::string>;
 	using functionName = std::string;
-	using functionArg = std::string;
 
-	const functionName parseLine(const std::string&, std::vector<functionArg>&);
+	const functionName parseLine(const std::string&, Args&);
 
 	template<class T>
 	T* strTo(const std::string&);
