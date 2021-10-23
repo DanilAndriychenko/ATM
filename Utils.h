@@ -3,8 +3,9 @@
 #include <vector>
 
 using functionArg = std::string;
+using functionName = std::string;
 
 namespace Utilities
 {
-	std::pair<std::string, std::vector<functionArg>> parseLine(const std::string&);
+	const functionName parseLine(const std::string&, std::vector<functionArg>&);
 }
