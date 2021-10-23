@@ -5,13 +5,16 @@
 class Maintenance final : public State
 {
 public:
-	//explicit Maintenance(): State() {}
+	explicit Maintenance(): State(_commandsForThisState) {}
 	Maintenance(const Maintenance& other) = delete;
 	Maintenance& operator=(const Maintenance& other) = delete;
 	~Maintenance() override {}
 
-	void test(utils::Args) {}
+	
+	std::shared_ptr<State> getNextState() override;
 
 private:
-	static std::unordered_map<std::string, State::CommandPtr> _comsToPtrs;
+    static ComsToPtrs _commandsForThisState;
+
+	static bool getTotal(utils::Args arguments);
 };

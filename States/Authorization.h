@@ -9,8 +9,11 @@ public:
     Authorization(const Authorization& other) = delete;
     Authorization& operator=(const Authorization& other) = delete;
 
+    std::shared_ptr<State> getNextState() override;
+
 private:
     static ComsToPtrs _commandsForThisState;
+    
+    static bool authorize(utils::Args);
 };
 
-void authorize(std::vector<utils::Args>);
