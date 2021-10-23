@@ -13,5 +13,11 @@ namespace utils
 	template<class T>
 	T* strTo(const std::string&);
 
+	template<int>
+	int* strTo(const std::string&)
+	{
+		
+	}
+
 	unsigned hashStr(const char* s);
 }

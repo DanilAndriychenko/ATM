@@ -6,5 +6,6 @@ using std::string;
 int main(int argc, char* argv[])
 {
     ATM atm{};
+	std::cout << "Hello\n";
 	return 0;
 }

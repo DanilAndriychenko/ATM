@@ -13,4 +13,4 @@ private:
     static ComsToPtrs _commandsForThisState;
 };
 
-void authorize(std::vector<utils::Args>){};
+void authorize(std::vector<utils::Args>);

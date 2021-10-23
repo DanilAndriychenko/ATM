@@ -5,3 +5,8 @@
 // Authorization::Authorization()
 // {
 // }
+
+void authorize(std::vector<utils::Args>)
+{
+    
+}
