@@ -7,8 +7,10 @@
 namespace utils
 {
 	using Args = std::vector<std::string>;
-	
-	std::pair<std::string, Args> parseLine(const std::string&);
+	using functionName = std::string;
+	using functionArg = std::string;
+
+	const functionName parseLine(const std::string&, std::vector<functionArg>&);
 
 	template<class T>
 	T* strTo(const std::string&);
@@ -16,7 +18,7 @@ namespace utils
 	template<int>
 	int* strTo(const std::string& string)
 	{
-		stoi(string)
+		stoi(string);
 	}
 
 	unsigned hashStr(const char* s);
