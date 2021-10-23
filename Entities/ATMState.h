@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include <unordered_map>
 
-#include "Entities/Banknotes.h"
+#include "Banknotes.h"
 
 class User;
 //This class is a data storage
