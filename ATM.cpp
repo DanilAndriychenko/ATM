@@ -1,5 +1,9 @@
 #include "ATM.h"
 
+
+#include "Entities/ATMState.h"
+#include "States/Authorization.h"
+
 // void ATM::printAvailableCommandsWithDescription(const Mode state) const
 // {
 // 	const auto availableCommands = _stateToAvailableCommands.at(state);
@@ -12,3 +16,15 @@
 // 		}
 // 	}
 // }
+void ATM::turnOn()
+{
+    ATMState::getATMState().setCurrentState(std::make_shared<Authorization>());
+}
+
+void ATM::executeCommandIfExists(std::pair<std::string, utils::Args> input)
+{
+    if(ATMState::getATMState().getCurrentState()->executeCommandIfExists(input))
+    {
+        ATMState::getATMState().setCurrentState(ATMState::getATMState().getCurrentState()->getNextState());
+    }
+}

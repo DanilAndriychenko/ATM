@@ -5,6 +5,10 @@
 #include <vector>
 #include <string>
 
+
+#include "Utilities/Utils.h"
+
+class State;
 using std::cout;
 using std::map;
 using std::vector;
@@ -13,10 +17,10 @@ using std::string;
 class ATM
 {
 public:
-    void TurnOn(){};
-
+    void turnOn();
+    void executeCommandIfExists(std::pair<std::string, utils::Args>);
 private:
-    class State* _currentState;
+
 };
 
 // class ATM

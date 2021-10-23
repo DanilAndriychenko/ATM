@@ -1,5 +1,6 @@
 #pragma once
 
+#include <algorithm>
 #include <string>
 #include <vector>
 
@@ -11,14 +12,10 @@ namespace utils
 
 	const functionName parseLine(const std::string&, Args&);
 
-	template<class T>
-	T* strTo(const std::string&);
-
-	template<int>
-	int* strTo(const std::string& string)
-	{
-		stoi(string);
-	}
+    bool is_double(const std::string& s);
+    bool is_int(const std::string& s);
 
 	unsigned hashStr(const char* s);
+
+	void toLowerCase(std::string& str);
 }
