@@ -1,48 +1,37 @@
 ﻿#include "State.h"
+#include "../Entities/ATM.h"
 
 #include <iostream>
 
-#include "../Entities/ATMState.h"
-
-State::State(ComsToPtrs& comsToDesc): _commandsToPtrs(comsToDesc)
+State::State(CommandToDataMap& commandToDataMap): _commandToDataMap(commandToDataMap)
 {
-	comsToDesc.insert({Command("help", "shows all available commands and their descriptions"), &State::help});
+	commandToDataMap.insert({
+		"help",
+		{"shows all available commands and their descriptions", &State::help}
+	});
 }
 
-bool State::executeCommandIfExists(std::pair<std::string, utils::Args> parsedInput)
+bool State::executeCommandIfExists(const ParsedInput& parsedInput) const
 {
-	if(_commandsToPtrs.contains(parsedInput.first))
+	if (_commandToDataMap.contains(parsedInput.commandName))
 	{
-		return _commandsToPtrs[parsedInput.first](parsedInput.second);
+		return _commandToDataMap.at(parsedInput.commandName).commandPtr(parsedInput.args);
 	}
-	else
-	{
-		std::cout << "Invalid command\n";
-		return false;
-	}
-}
 
-void State::printAllStates()
-{
-	for(auto& kv : _commandsToPtrs) {
-		std::cout << kv.first.name << " " << kv.first.description << '\n';
-	} 
-}
-
-bool State::help(utils::Args)
-{
-	ATMState::getATMState().getCurrentState()->printAllStates();
+	std::cout << "Invalid command\n";
 	return false;
 }
 
-bool operator==(const State::Command& lhs, const State::Command& rhs)
+void State::printAllCommands() const
 {
-	for(int i = 0; i < lhs.name.size(); i++)
+	for (const auto& [fst, snd] : _commandToDataMap)
 	{
-		if(std::tolower(lhs.name[i]) != std::tolower(rhs.name[i]))
-		{
-			return false;
-		}
+		std::cout << fst << " - " << snd.description << '\n';
 	}
-	return true;
+}
+
+bool State::help(Args)
+{
+	ATM::getATM().getCurrentState()->printAllCommands();
+	return false;
 }

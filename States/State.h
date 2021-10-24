@@ -2,58 +2,40 @@
 
 #include <memory>
 
-#include "../Utilities/Utils.h"
+#include "../Utils/Utils.h"
 
 #include <string>
-#include <unordered_map>
+#include <map>
 
-using std::unordered_map;
+using std::map;
 using std::string;
 
 class State
 {
 public:
-	//if returns true the move to new state
-	using CommandPtr = bool (*)(utils::Args);
-	struct Command
-	{
-		Command(string commandName) : name(commandName){}
-		Command(string commandName, string commandDescription) : name(commandName), description(commandDescription)
-		{
-			utils::toLowerCase(name);
-		}
-		
-		string name;
-		string description;
-	};
-	using ComsToPtrs = unordered_map<Command, CommandPtr>;
-	
-	
-	explicit State(ComsToPtrs& comsToDesc);
+	// If returns true then move to new state
+	using CommandPtr = bool (*)(Args);
+	struct CommandData;
+	// TODO here should be unordered_map, but there is problem with contains function
+	using CommandToDataMap = map<CommandName, CommandData>;
+
+	explicit State(CommandToDataMap& commandToDataMap);
 	State(const State& other) = delete;
 	State& operator=(const State& other) = delete;
-	virtual ~State(){};
+	virtual ~State() {};
 
-	bool executeCommandIfExists(std::pair<std::string, utils::Args>);
+	bool executeCommandIfExists(const ParsedInput& parsedInput) const;
 
 	virtual std::shared_ptr<State> getNextState() = 0;
-	void printAllStates();
-
+	void printAllCommands() const;
 private:
-	ComsToPtrs& _commandsToPtrs;
+	CommandToDataMap& _commandToDataMap;
 
-	static bool help(utils::Args);
+	static bool help(Args);
 };
 
-bool operator==(const State::Command&, const State::Command&);
-
-namespace std
+struct State::CommandData
 {
-	template<> struct hash<State::Command>
-	{
-		std::size_t operator()(State::Command const& s) const noexcept
-		{
-			return utils::hashStr(s.name.c_str());
-		}
-	};
-}
+	string description;
+	CommandPtr commandPtr;
+};

@@ -12,8 +12,8 @@ public:
     std::shared_ptr<State> getNextState() override;
 
 private:
-    static ComsToPtrs _commandsForThisState;
+    static CommandToDataMap _commandsForThisState;
     
-    static bool authorize(utils::Args);
+    static bool authorize(Args);
 };
 

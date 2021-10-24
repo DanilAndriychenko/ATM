@@ -1,24 +1,28 @@
 ﻿#include "Maintenance.h"
-#include <functional>
+#include "Authorization.h"
+#include "../Entities/ATM.h"
+
 #include <iostream>
 
-
-#include "Authorization.h"
-#include "../Entities/ATMState.h"
-
-Maintenance::ComsToPtrs Maintenance::_commandsForThisState
+Maintenance::CommandToDataMap Maintenance::_commandsForThisState
 {
-	{Command{"getTotal", "Authorizes you to ATM takes id and password as arguments"}, &Maintenance::getTotal}
+	{
+		"getTotal",
+		{
+			"desc not writen yet",
+			&Maintenance::getTotal
+		}
+	}
 };
 
 std::shared_ptr<State> Maintenance::getNextState()
 {
-    std::cout << "movingToNextState\n";
+	std::cout << "movingToNextState\n";
 	return std::make_shared<Authorization>();
 }
 
-bool Maintenance::getTotal(utils::Args arguments)
+bool Maintenance::getTotal(Args arguments)
 {
-	std::cout << ATMState::getATMState().getTotalSumAsAdmin() << '\n';
+	std::cout << ATM::getATM().getTotalSumAsAdmin() << '\n';
 	return false;
 }

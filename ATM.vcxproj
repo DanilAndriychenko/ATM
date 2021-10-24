@@ -160,8 +160,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ATM.cpp" />
-    <ClCompile Include="Entities\ATMState.cpp">
+    <ClCompile Include="Entities\ATM.cpp">
       <RuntimeLibrary>MultiThreadedDebugDll</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <Optimization>Disabled</Optimization>
@@ -511,7 +510,7 @@
       <SDLCheck>true</SDLCheck>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
-    <ClCompile Include="Utilities\Utils.cpp">
+    <ClCompile Include="Utils\Utils.cpp">
       <RuntimeLibrary>MultiThreadedDebugDll</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <Optimization>Disabled</Optimization>
@@ -582,8 +581,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ATM.h" />
-    <ClInclude Include="Entities\ATMState.h" />
+    <ClInclude Include="Entities\ATM.h" />
     <ClInclude Include="Entities\BanknoteBank.h" />
     <ClInclude Include="Entities\Banknotes.h" />
     <ClInclude Include="Entities\JSONItem.h" />
@@ -630,7 +628,7 @@
     <ClInclude Include="States\Authorization.h" />
     <ClInclude Include="States\Maintenance.h" />
     <ClInclude Include="States\State.h" />
-    <ClInclude Include="Utilities\Utils.h" />
+    <ClInclude Include="Utils\Utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

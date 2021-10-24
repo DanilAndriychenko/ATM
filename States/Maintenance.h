@@ -10,11 +10,10 @@ public:
 	Maintenance& operator=(const Maintenance& other) = delete;
 	~Maintenance() override {}
 
-	
 	std::shared_ptr<State> getNextState() override;
 
 private:
-    static ComsToPtrs _commandsForThisState;
+	static CommandToDataMap _commandsForThisState;
 
-	static bool getTotal(utils::Args arguments);
+	static bool getTotal(Args arguments);
 };
