@@ -34,7 +34,13 @@ namespace utils
 		}
 	};
 }*/
-
+struct StringHasher
+{
+	std::size_t operator()(const std::string& str) const noexcept
+	{
+		return utils::hashStr(str.c_str());
+	}
+};
 
 
 

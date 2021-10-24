@@ -1,13 +1,12 @@
 ﻿#pragma once
 
-#include <memory>
-
 #include "../Utils/Utils.h"
 
+#include <memory>
 #include <string>
-#include <map>
+#include <unordered_map>
 
-using std::map;
+using std::unordered_map;
 using std::string;
 
 class State
@@ -16,8 +15,7 @@ public:
 	// If returns true then move to new state
 	using CommandPtr = bool (*)(Args);
 	struct CommandData;
-	// TODO here should be unordered_map, but there is problem with contains function
-	using CommandToDataMap = map<CommandName, CommandData>;
+	using CommandToDataMap = unordered_map<CommandName, CommandData>;
 
 	explicit State(CommandToDataMap& commandToDataMap);
 	State(const State& other) = delete;

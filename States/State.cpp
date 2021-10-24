@@ -13,6 +13,11 @@ State::State(CommandToDataMap& commandToDataMap): _commandToDataMap(commandToDat
 
 bool State::executeCommandIfExists(const ParsedInput& parsedInput) const
 {
+	/* For Rider users:
+	 * Inspections with the fixed severity level 'Error'.
+	 * These inspections detect compiler errors and there is no way to disable or configure them.
+	 * https://www.jetbrains.com/help/rider/Code_Analysis__Code_Inspections.html
+	 */
 	if (_commandToDataMap.contains(parsedInput.commandName))
 	{
 		return _commandToDataMap.at(parsedInput.commandName).commandPtr(parsedInput.args);
