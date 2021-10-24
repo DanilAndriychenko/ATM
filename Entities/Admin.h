@@ -23,6 +23,6 @@ private:
 	int _pin;
 };
 //throw exception in case of incorrect document
-const Admin* findAdminByID(const int64_t, rapidjson::Document&);
+const Admin* findAdminByID(const int64_t, const rapidjson::Document&);
 
 std::ostream& operator<< (std::ostream& os, const Admin&);
