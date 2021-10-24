@@ -15,6 +15,11 @@ void ATM::listenCommands()
 	while (true)
 	{
 		std::getline(std::cin, input);
+		if (input.empty())
+		{
+			std::cout << "Invalid command\n";
+			continue;
+		}
 		ParsedInput parsedInput{};
 		parsedInput.commandName = utils::parseLine(input, parsedInput.args);
 		utils::toLowerCase(parsedInput.commandName);
