@@ -32,3 +32,20 @@ std::ostream& operator<< (std::ostream& os, const Admin& adm)
 	return os;
 }
 
+const Admin* findAdminByID(const int64_t id, rapidjson::Document& doc)
+{
+	if (!doc.IsArray())
+		return nullptr; //throw exception
+	rapidjson::Value::ValueIterator itr = doc.GetArray().Begin();
+	Admin* admin(nullptr);
+	for (rapidjson::Value::ConstValueIterator itr = doc.Begin(); itr != doc.End(); ++itr)
+	{
+		if ((*itr)["id"].GetInt64() == id)
+		{
+			admin = new Admin();
+			admin->Deserialize(*itr);
+			break;
+		}
+	}
+	return admin;
+}
