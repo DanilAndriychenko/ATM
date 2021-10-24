@@ -301,7 +301,7 @@
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
     <ClCompile Include="Entities\JSONItem.cpp" />
-    <ClCompile Include="Entities\Admin.cpp" />
+    <ClCompile Include="Entities\Account.cpp" />
     <ClCompile Include="Entities\User.cpp">
       <RuntimeLibrary>MultiThreadedDebugDll</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -587,7 +587,7 @@
     <ClInclude Include="Entities\BanknoteBank.h" />
     <ClInclude Include="Entities\Banknotes.h" />
     <ClInclude Include="Entities\JSONItem.h" />
-    <ClInclude Include="Entities\Admin.h" />
+    <ClInclude Include="Entities\Account.h" />
     <ClInclude Include="Entities\User.h" />
     <ClInclude Include="rapidjson\allocators.h" />
     <ClInclude Include="rapidjson\cursorstreamwrapper.h" />

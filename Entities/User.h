@@ -1,8 +1,8 @@
 ﻿#pragma once
-#include "Admin.h"
+#include "Account.h"
 
 
-class User : public Admin
+class User : public Account
 {
 public:
 	User();

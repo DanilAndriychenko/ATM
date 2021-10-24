@@ -2,27 +2,31 @@
 #include "JSONItem.h"
 #include <iostream>
 
-class Admin : public JSONItem
+class Account : public JSONItem
 {
 public:
-	Admin();
-	Admin(const int64_t, const int);
-	virtual ~Admin() {}
+	Account();
+	Account(const bool);
+	Account(const int64_t, const int, const bool);
+	virtual ~Account() {}
 	virtual bool Deserialize(const rapidjson::Value& obj);
 	virtual bool Serialize(rapidjson::Writer<rapidjson::StringBuffer>* writer) const;
 
 	//getters / setters
 	const int64_t getID() const { return _id; }
 	const int getPin() const { return _pin; }
+	const bool isAdmin() const { return _isAdmin; }
 
 	void setID(const int64_t id) { _id = id; }
 	void setPin(const int pin) { _pin = pin; }
+	void setIsAdmin(const bool adm) { _isAdmin = adm; }
 
 private:
 	int64_t _id;
 	int _pin;
+	bool _isAdmin;
 };
 //throw exception in case of incorrect document
-const Admin* findAdminByID(const int64_t, const rapidjson::Document&);
+const Account* findAccountByID(const int64_t, const rapidjson::Document&);
 
-std::ostream& operator<< (std::ostream& os, const Admin&);
+std::ostream& operator<< (std::ostream& os, const Account&);

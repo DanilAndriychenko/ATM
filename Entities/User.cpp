@@ -1,10 +1,10 @@
 ﻿#include "User.h"
 
-User::User() : Admin(), _balance(0), _name("")
+User::User() : Account(false), _balance(0), _name("")
 {}
 
 User::User(const int64_t id, const std::string& name, const int pin, const int64_t balance) :
-	Admin(id, pin), _name(name), _balance(balance)
+	Account(id, pin, false), _name(name), _balance(balance)
 {}
 
 bool User::Deserialize(const rapidjson::Value& obj)
