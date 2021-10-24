@@ -12,6 +12,8 @@ namespace utils
 
 	const functionName parseLine(const std::string&, Args&);
 
+	const std::string getStringBuffer(const std::string& filePath);
+
     bool is_double(const std::string& s);
     bool is_int(const std::string& s);
 

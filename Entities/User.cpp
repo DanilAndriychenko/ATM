@@ -1,20 +1,10 @@
 ﻿#include "User.h"
 
-User::User() : Account(false), _balance(0), _name("")
-{}
 
 User::User(const int64_t id, const std::string& name, const int pin, const int64_t balance) :
 	Account(id, pin, false), _name(name), _balance(balance)
 {}
 
-bool User::Deserialize(const rapidjson::Value& obj)
-{
-	setID(obj["id"].GetInt64());
-	setPin(obj["pin"].GetInt());
-	setBalance(obj["balance"].GetInt64());
-	setName(obj["name"].GetString());
-	return true;
-}
 
 bool User::Serialize(rapidjson::Writer<rapidjson::StringBuffer>* writer) const
 {
@@ -37,9 +27,17 @@ bool User::Serialize(rapidjson::Writer<rapidjson::StringBuffer>* writer) const
 	return true;
 }
 
-std::ostream& operator<< (std::ostream& os, const User& us)
+const std::shared_ptr<User> User::Deserialize(const rapidjson::Value& obj)
 {
-	os << "User {\n" << "ID: " << us.getID() << "\nPIN: " << us.getPin() << "\nName: " << us.getName() << 
-		"\nBalance: " << us.getBalance() << '}';
-	return os;
+	return std::shared_ptr<User>(&User(obj["id"].GetInt64(), 
+									obj["name"].GetString(),
+									obj["pin"].GetInt64(),
+									obj["balance"].GetInt64()));
 }
+
+//std::ostream& operator<< (std::ostream& os, const User& us)
+//{
+//	os << "User {\n" << "ID: " << us.getID() << "\nPIN: " << us.getPin() << "\nName: " << us.getName() << 
+//		"\nBalance: " << us.getBalance() << '}';
+//	return os;
+//}

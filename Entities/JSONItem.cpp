@@ -1,5 +1,4 @@
 #include "JSONItem.h"
-
 #include <fstream>
 #include <sstream>
 
@@ -13,26 +12,26 @@ std::string JSONItem::Serialize() const
 	return "";
 }
 
-bool JSONItem::Deserialize(const std::string& s)
-{
-	rapidjson::Document doc;
-	if (!InitDocument(s, doc))
-		return false;
-
-	Deserialize(doc);
-
-	return true;
-}
-
-bool JSONItem::DeserializeFromFile(const std::string& filePath)
-{
-	std::ifstream f(filePath);
-	std::stringstream buffer;
-	buffer << f.rdbuf();
-	f.close();
-
-	return Deserialize(buffer.str());
-}
+//bool JSONItem::Deserialize(const std::string& s)
+//{
+//	rapidjson::Document doc;
+//	if (!InitDocument(s, doc))
+//		return false;
+//
+//	Deserialize(doc);
+//
+//	return true;
+//}
+//
+//bool JSONItem::DeserializeFromFile(const std::string& filePath)
+//{
+//	std::ifstream f(filePath);
+//	std::stringstream buffer;
+//	buffer << f.rdbuf();
+//	f.close();
+//
+//	return Deserialize(buffer.str());
+//}
 
 bool JSONItem::SerializeToFile(const std::string& filePath)
 {
@@ -45,7 +44,7 @@ bool JSONItem::SerializeToFile(const std::string& filePath)
 	return true;
 }
 
-bool JSONItem::InitDocument(const std::string& s, rapidjson::Document& doc)
+bool InitDocument(const std::string& s, rapidjson::Document& doc)
 {
 	if (s.empty())
 		return false;

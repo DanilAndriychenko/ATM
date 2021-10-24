@@ -161,6 +161,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ATM.cpp" />
+    <ClCompile Include="Entities\Admins.cpp" />
+    <ClCompile Include="Entities\Admin.cpp" />
     <ClCompile Include="Entities\ATMState.cpp">
       <RuntimeLibrary>MultiThreadedDebugDll</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -371,6 +373,7 @@
       <SDLCheck>true</SDLCheck>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
+    <ClCompile Include="Entities\Users.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="States\Authorization.cpp" />
     <ClCompile Include="States\Maintenance.cpp">
@@ -583,12 +586,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ATM.h" />
+    <ClInclude Include="Entities\Admins.h" />
+    <ClInclude Include="Entities\Admin.h" />
     <ClInclude Include="Entities\ATMState.h" />
     <ClInclude Include="Entities\BanknoteBank.h" />
     <ClInclude Include="Entities\Banknotes.h" />
     <ClInclude Include="Entities\JSONItem.h" />
     <ClInclude Include="Entities\Account.h" />
     <ClInclude Include="Entities\User.h" />
+    <ClInclude Include="Entities\Users.h" />
     <ClInclude Include="rapidjson\allocators.h" />
     <ClInclude Include="rapidjson\cursorstreamwrapper.h" />
     <ClInclude Include="rapidjson\document.h" />

@@ -1,6 +1,8 @@
 #include "Utils.h"
 
 #include <regex>
+#include <fstream>
+#include <sstream>
 
 const utils::functionName utils::parseLine(const std::string& line, Args& tokenized)
 {
@@ -22,6 +24,15 @@ const utils::functionName utils::parseLine(const std::string& line, Args& tokeni
     return fname;
 }
 
+const std::string utils::getStringBuffer(const std::string& filePath)
+{
+    std::ifstream f(filePath);
+    std::stringstream buffer;
+    buffer << f.rdbuf();
+    f.close();
+    return buffer.str();
+}
+
 unsigned utils::hashStr(const char* s)
 {
     unsigned h = 37;
@@ -32,6 +43,7 @@ unsigned utils::hashStr(const char* s)
     }
     return h % 86969;
 }
+
 
 bool utils::is_double(const std::string& s)
 {
