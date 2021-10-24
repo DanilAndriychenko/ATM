@@ -1,6 +1,6 @@
 #pragma once
 #include "User.h"
-#include "../Utilities/Utils.h"
+#include "../Utils/Utils.h"
 #include <vector>
 
 class Users : public JSONItem

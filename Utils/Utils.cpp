@@ -1,11 +1,13 @@
 #include "Utils.h"
 
+#include <fstream>
+#include <sstream>
 #include <regex>
 
 const CommandName utils::parseLine(const std::string& line, Args& tokenized)
 {
 	if (!tokenized.empty()) tokenized.clear();
-	
+
 	const std::regex re("\\s+");
 	const std::sregex_token_iterator begin(line.begin(), line.end(), re, -1), end;
 	std::copy(begin, end, std::back_inserter(tokenized));
@@ -50,4 +52,13 @@ void utils::toLowerCase(std::string& str)
 						   {
 							   return std::tolower(c);
 						   });
+}
+
+const std::string utils::getStringBuffer(const std::string& filePath)
+{
+	std::ifstream f(filePath);
+	std::stringstream buffer;
+	buffer << f.rdbuf();
+	f.close();
+	return buffer.str();
 }

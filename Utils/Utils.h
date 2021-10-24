@@ -22,6 +22,8 @@ namespace utils
 	bool isInt(const std::string& str);
 
 	void toLowerCase(std::string& str);
+	
+	const std::string getStringBuffer(const std::string& filePath);
 }
 
 /*namespace std
