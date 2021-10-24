@@ -4,15 +4,16 @@
 
 #include <iostream>
 
-Maintenance::CommandToDataMap Maintenance::_commandsForThisState
+Maintenance::CommandToDataMap Maintenance::_commandToDataMap
 {
-	{
-		"getTotal",
-		{
-			"desc not writen yet",
-			&Maintenance::getTotal
-		}
-	}
+	{"showBalance", {"empty description", &Maintenance::showBalance}},
+	{"addBanknotes", {"empty description", &Maintenance::addBanknotes}},
+	{"cashOutBanknotes", {"empty description", &Maintenance::cashOutBanknotes}},
+	{"changeBanksName", {"empty description", &Maintenance::changeBanksName}},
+	{"addAdminAcc", {"empty description", &Maintenance::addAdminAcc}},
+	{"editAdminAcc", {"empty description", &Maintenance::editAdminAcc}},
+	{"deleteAdminAcc", {"empty description", &Maintenance::deleteAdminAcc}},
+	{"quit", {"empty description", &Maintenance::quit}},
 };
 
 std::shared_ptr<State> Maintenance::getNextState()
@@ -21,8 +22,11 @@ std::shared_ptr<State> Maintenance::getNextState()
 	return std::make_shared<Authorization>();
 }
 
-bool Maintenance::getTotal(Args)
-{
-	std::cout << ATM::getATM().getTotalSumAsAdmin() << '\n';
-	return false;
-}
+bool Maintenance::showBalance(Args&) { return false; }
+bool Maintenance::addBanknotes(Args&) { return false; }
+bool Maintenance::cashOutBanknotes(Args&) { return false; }
+bool Maintenance::quit(Args&) { return false; }
+bool Maintenance::changeBanksName(Args&) { return false; }
+bool Maintenance::addAdminAcc(Args&) { return false; }
+bool Maintenance::editAdminAcc(Args&) { return false; }
+bool Maintenance::deleteAdminAcc(Args&) { return false; }

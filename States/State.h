@@ -13,7 +13,7 @@ class State
 {
 public:
 	// If returns true then move to new state
-	using CommandPtr = bool (*)(Args);
+	using CommandPtr = bool (*)(Args&);
 	struct CommandData;
 	using CommandToDataMap = unordered_map<CommandName, CommandData>;
 
