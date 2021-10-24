@@ -14,7 +14,7 @@ class State
 {
 public:
 	// If returns true then move to new state
-	using CommandPtr = bool (*)(Args);
+	using CommandPtr = bool (*)(Args&);
 	struct CommandData;
 	// TODO here should be unordered_map, but there is problem with contains function
 	using CommandToDataMap = map<CommandName, CommandData>;
@@ -24,14 +24,14 @@ public:
 	State& operator=(const State& other) = delete;
 	virtual ~State() {};
 
-	bool executeCommandIfExists(const ParsedInput& parsedInput) const;
+	bool executeCommandIfExists(ParsedInput& parsedInput) const;
 
 	virtual std::shared_ptr<State> getNextState() = 0;
 	void printAllCommands() const;
 private:
 	CommandToDataMap& _commandToDataMap;
 
-	static bool help(Args);
+	static bool help(Args&);
 };
 
 struct State::CommandData

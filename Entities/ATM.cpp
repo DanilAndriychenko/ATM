@@ -23,7 +23,7 @@ void ATM::listenCommands()
 	}
 }
 
-void ATM::executeCommandIfExists(const ParsedInput& parsedCommand)
+void ATM::executeCommandIfExists(ParsedInput& parsedCommand)
 {
 	if (_currentState->executeCommandIfExists(parsedCommand))
 	{

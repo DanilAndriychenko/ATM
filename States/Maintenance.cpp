@@ -21,7 +21,7 @@ std::shared_ptr<State> Maintenance::getNextState()
 	return std::make_shared<Authorization>();
 }
 
-bool Maintenance::getTotal(Args arguments)
+bool Maintenance::getTotal(Args& arguments)
 {
 	std::cout << ATM::getATM().getTotalSumAsAdmin() << '\n';
 	return false;

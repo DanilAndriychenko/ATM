@@ -372,6 +372,7 @@
     </ClCompile>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="States\Authorization.cpp" />
+    <ClCompile Include="States\MainActions.cpp" />
     <ClCompile Include="States\Maintenance.cpp">
       <RuntimeLibrary>MultiThreadedDebugDll</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -626,6 +627,7 @@
     <ClInclude Include="rapidjson\uri.h" />
     <ClInclude Include="rapidjson\writer.h" />
     <ClInclude Include="States\Authorization.h" />
+    <ClInclude Include="States\MainActions.h" />
     <ClInclude Include="States\Maintenance.h" />
     <ClInclude Include="States\State.h" />
     <ClInclude Include="Utils\Utils.h" />

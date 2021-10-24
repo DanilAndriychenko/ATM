@@ -20,7 +20,7 @@ std::shared_ptr<State> Authorization::getNextState()
 	return std::make_shared<Maintenance>();
 }
 
-bool Authorization::authorize(Args arguments)
+bool Authorization::authorize(Args& arguments)
 {
 	if (arguments.size() == 2 && utils::isInt(arguments[0]) && utils::isInt(arguments[1]))
 	{

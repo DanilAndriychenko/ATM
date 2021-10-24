@@ -15,5 +15,5 @@ public:
 private:
 	static CommandToDataMap _commandsForThisState;
 
-	static bool getTotal(Args arguments);
+	static bool getTotal(Args& arguments);
 };

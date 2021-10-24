@@ -11,7 +11,7 @@ State::State(CommandToDataMap& commandToDataMap): _commandToDataMap(commandToDat
 	});
 }
 
-bool State::executeCommandIfExists(const ParsedInput& parsedInput) const
+bool State::executeCommandIfExists(ParsedInput& parsedInput) const
 {
 	if (_commandToDataMap.contains(parsedInput.commandName))
 	{
@@ -30,7 +30,7 @@ void State::printAllCommands() const
 	}
 }
 
-bool State::help(Args)
+bool State::help(Args&)
 {
 	ATM::getATM().getCurrentState()->printAllCommands();
 	return false;

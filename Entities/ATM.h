@@ -16,7 +16,7 @@ public:
 	static ATM& getATM();
 
 	void listenCommands();
-	void executeCommandIfExists(const ParsedInput& parsedCommand);
+	void executeCommandIfExists(ParsedInput& parsedCommand);
 
 	void setCurrentUser(const User&);
 	User* getCurrentUser() { return _currentUser; }
