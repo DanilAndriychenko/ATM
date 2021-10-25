@@ -2,20 +2,19 @@
 #include "Account.h"
 
 
-class User : public Account
+class User final : public Account
 {
 public:
 	User(const int64_t, const std::string&, const int, const int64_t);
-	virtual ~User() {}
+	~User() {}
 
-	virtual bool Serialize(rapidjson::Writer<rapidjson::StringBuffer>* writer) const;
 	static const std::shared_ptr<User> Deserialize(const rapidjson::Value& obj);
-
 
 	const int64_t getBalance() const { return _balance; }
 	const std::string& getName() const { return _name; }
 
 private:
+	bool Serialize(rapidjson::Writer<rapidjson::StringBuffer>* writer) const override;
 	const int64_t  _balance;
 	const std::string _name;
 };

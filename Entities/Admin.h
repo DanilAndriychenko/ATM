@@ -1,11 +1,11 @@
 #pragma once
 #include "Account.h"
 
-class Admin : public Account
+class Admin final : public Account
 {
 public:
 	Admin(const int64_t, const int);
-	virtual ~Admin() {}
+	~Admin() {}
 	static const std::shared_ptr<Admin> Deserialize(const rapidjson::Value& obj);
 };
 

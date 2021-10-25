@@ -6,8 +6,7 @@ class Account : public JSONItem
 {
 public:
 	Account(const int64_t, const int, const bool);
-	virtual ~Account() {};
-	virtual bool Serialize(rapidjson::Writer<rapidjson::StringBuffer>* writer) const;
+	virtual ~Account() = 0;
 
 protected:
 	const int64_t getID() const { return _id; }
@@ -15,12 +14,9 @@ protected:
 	const bool isAdmin() const { return _isAdmin; }
 
 private:
+	virtual bool Serialize(rapidjson::Writer<rapidjson::StringBuffer>* writer) const;
 	const int64_t _id;
 	const int _pin;
 	const bool _isAdmin;
 };
-
-
-//throw exception in case of incorrect document
-//const Account* findAccountByID(const int64_t, const rapidjson::Document&);
 

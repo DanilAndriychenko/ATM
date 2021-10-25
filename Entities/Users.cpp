@@ -20,7 +20,7 @@ bool Users::Serialize(rapidjson::Writer<rapidjson::StringBuffer>* writer) const
 
 	for (std::vector<User>::const_iterator it = _users.begin(); it != _users.end(); it++)
 	{
-		(*it).Serialize(writer);
+		(*it).doSerialize(writer);
 	}
 	writer->EndArray();
 

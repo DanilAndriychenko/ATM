@@ -1,15 +1,15 @@
 #pragma once
 #include "User.h"
-#include "../Utils/Utils.h"
+//#include "../Utils/Utils.h"
 #include <vector>
 
-class Users : public JSONItem
+class Users final : public JSONItem
 {
 public:
 	Users(const std::string& filePath);
-	virtual ~Users() {}
+	~Users() {}
 
-	virtual bool Serialize(rapidjson::Writer<rapidjson::StringBuffer>* writer) const;
+	bool Serialize(rapidjson::Writer<rapidjson::StringBuffer>* writer) const;
 	const std::shared_ptr<User> findUserByID(const int64_t id);
 
 	const std::vector<User>& getUsers() const { return _users; }

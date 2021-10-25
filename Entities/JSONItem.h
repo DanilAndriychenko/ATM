@@ -6,18 +6,18 @@
 #include "..\rapidjson\stringbuffer.h"	
 #include "..\rapidjson\prettywriter.h"
 
+#include "../Utils/Utils.h"
 
 class JSONItem
 {
 public:
-//  bool DeserializeFromFile(const std::string& filePath);
+
 	bool SerializeToFile(const std::string& filePath);
 	virtual ~JSONItem() {}
-	virtual std::string Serialize() const;
-//	virtual bool Deserialize(const std::string& s);
-
-//	virtual bool Deserialize(const rapidjson::Value& obj) = 0;
+	bool doSerialize(rapidjson::Writer<rapidjson::StringBuffer>* writer) const { return Serialize(writer); }
+private:
 	virtual bool Serialize(rapidjson::Writer<rapidjson::StringBuffer>* writer) const = 0;
+	virtual std::string Serialize() const;
 };
 
 bool InitDocument(const std::string& s, rapidjson::Document& doc);

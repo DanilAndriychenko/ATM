@@ -4,18 +4,17 @@
 
 using Banknote = int;
 
-class BanknoteBank : public JSONItem
+class BanknoteBank final : public JSONItem
 {
 public:
-	BanknoteBank();
-	virtual ~BanknoteBank() {}
-
-	virtual bool Deserialize(const rapidjson::Value& obj);
-	virtual bool Serialize(rapidjson::Writer<rapidjson::StringBuffer>* writer) const;
+	BanknoteBank(const std::string& filePath);
+	~BanknoteBank() {}
+	bool Serialize(rapidjson::Writer<rapidjson::StringBuffer>* writer) const;
 
 	const std::unordered_map<Banknote, int>& getAvailableBanknotes() const { return _availableBanknotes; }
-	void setAvailableBanknotes(const std::unordered_map<Banknote, int>& map) { _availableBanknotes = map; }
+	//void setAvailableBanknotes(const std::unordered_map<Banknote, int>& map) { _availableBanknotes = map; }
 
 private:
 	std::unordered_map<Banknote, int> _availableBanknotes;
+	rapidjson::Document _doc;
 };

@@ -2,6 +2,8 @@
 
 Account::Account(const int64_t id, const int pin, const bool isAdmin) : _id(id), _pin(pin), _isAdmin(isAdmin) {}
 
+Account::~Account() {}
+
 bool Account::Serialize(rapidjson::Writer<rapidjson::StringBuffer>* writer) const
 {
 	writer->StartObject();

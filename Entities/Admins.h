@@ -1,15 +1,14 @@
 #pragma once
 #include "Admin.h"
-#include "../Utils/Utils.h"
 #include <vector>
 
-class Admins : public JSONItem
+class Admins final : public JSONItem
 {
 public:
 	Admins(const std::string& filePath);
-	virtual ~Admins() {}
+	~Admins() {}
 
-	virtual bool Serialize(rapidjson::Writer<rapidjson::StringBuffer>* writer) const;
+	bool Serialize(rapidjson::Writer<rapidjson::StringBuffer>* writer) const;
 	const std::shared_ptr<Admin> findAdminByID(const int64_t id);
 	
 	const std::vector<Admin>& getAdmins() const { return _admins; }
