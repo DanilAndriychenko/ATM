@@ -160,15 +160,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Entities\Account.cpp" />
     <ClCompile Include="Entities\Admin.cpp" />
-    <ClCompile Include="Entities\Admins.cpp" />
     <ClCompile Include="Entities\ATM.cpp" />
     <ClCompile Include="Entities\BanknoteBank.cpp" />
     <ClCompile Include="Entities\Banknotes.cpp" />
     <ClCompile Include="Entities\JSONItem.cpp" />
     <ClCompile Include="Entities\User.cpp" />
-    <ClCompile Include="Entities\Users.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="States\Authorization.cpp" />
     <ClCompile Include="States\Maintenance.cpp" />
@@ -178,13 +175,12 @@
   <ItemGroup>
     <ClInclude Include="Entities\Account.h" />
     <ClInclude Include="Entities\Admin.h" />
-    <ClInclude Include="Entities\Admins.h" />
     <ClInclude Include="Entities\ATM.h" />
     <ClInclude Include="Entities\BanknoteBank.h" />
     <ClInclude Include="Entities\Banknotes.h" />
     <ClInclude Include="Entities\JSONItem.h" />
     <ClInclude Include="Entities\User.h" />
-    <ClInclude Include="Entities\Users.h" />
+    <ClInclude Include="Entities\Accounts.h" />
     <ClInclude Include="rapidjson\allocators.h" />
     <ClInclude Include="rapidjson\cursorstreamwrapper.h" />
     <ClInclude Include="rapidjson\document.h" />

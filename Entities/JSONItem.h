@@ -11,13 +11,10 @@
 class JSONItem
 {
 public:
-
-	bool SerializeToFile(const std::string& filePath);
 	virtual ~JSONItem() {}
-	bool doSerialize(rapidjson::Writer<rapidjson::StringBuffer>* writer) const { return Serialize(writer); }
+	bool doSerialize(rapidjson::Document& doc) const { return Serialize(doc); }
 private:
-	virtual bool Serialize(rapidjson::Writer<rapidjson::StringBuffer>* writer) const = 0;
-	virtual std::string Serialize() const;
+	virtual bool Serialize(rapidjson::Document&) const = 0;
 };
 
-bool InitDocument(const std::string& s, rapidjson::Document& doc);
+void InitDocument(const std::string&, rapidjson::Document&);

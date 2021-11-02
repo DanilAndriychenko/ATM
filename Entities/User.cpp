@@ -5,23 +5,23 @@ User::User(const int64_t id, const std::string& name, const int pin, const int64
 {}
 
 
-bool User::Serialize(rapidjson::Writer<rapidjson::StringBuffer>* writer) const
+bool User::Serialize(rapidjson::Document& doc) const
 {
-	writer->StartObject();
+	auto& allocator = doc.GetAllocator();
 
-	writer->String("id");
-	writer->Int64(getID());
+	rapidjson::Value v;
 
-	writer->String("name");
-	writer->String(_name.c_str());
+	v.SetObject();
 
-	writer->String("balance");
-	writer->Int64(_balance);
+	v.AddMember("id", getID(), allocator);
 
-	writer->String("pin");
-	writer->Int(getPin());
+	v.AddMember("name", rapidjson::StringRef(getName().c_str()), allocator);
 
-	writer->EndObject();
+	v.AddMember("balance", getBalance(), allocator);
+
+	v.AddMember("pin", getPin(), allocator);
+
+	doc.PushBack(v, allocator);
 
 	return true;
 }

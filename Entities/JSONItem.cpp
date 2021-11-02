@@ -1,55 +1,12 @@
 #include "JSONItem.h"
-#include <fstream>
-#include <sstream>
 
-
-std::string JSONItem::Serialize() const
-{
-	rapidjson::StringBuffer ss;
-	rapidjson::Writer<rapidjson::StringBuffer> writer(ss);		// Can also use Writer for condensed formatting
-	if (Serialize(&writer))
-		return ss.GetString();
-	return "";
-}
-
-//bool JSONItem::Deserialize(const std::string& s)
-//{
-//	rapidjson::Document doc;
-//	if (!InitDocument(s, doc))
-//		return false;
-//
-//	Deserialize(doc);
-//
-//	return true;
-//}
-//
-//bool JSONItem::DeserializeFromFile(const std::string& filePath)
-//{
-//	std::ifstream f(filePath);
-//	std::stringstream buffer;
-//	buffer << f.rdbuf();
-//	f.close();
-//
-//	return Deserialize(buffer.str());
-//}
-
-bool JSONItem::SerializeToFile(const std::string& filePath)
-{
-	std::ofstream f(filePath);
-	std::string s = Serialize();
-	f << s;
-	f.flush();
-	f.close();
-
-	return true;
-}
-
-bool InitDocument(const std::string& s, rapidjson::Document& doc)
+void InitDocument(const std::string& s, rapidjson::Document& doc)
 {
 	if (s.empty())
-		return false;
+		throw Exceptions::DeserializeException("Wrong file path!");
 
 	std::string validJson(s);
 
-	return !doc.Parse(validJson.c_str()).HasParseError() ? true : false;
+	if (doc.Parse(validJson.c_str()).HasParseError())
+		throw Exceptions::DeserializeException("Wrong file format!");
 }

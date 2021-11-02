@@ -14,7 +14,7 @@ public:
 	const std::string& getName() const { return _name; }
 
 private:
-	bool Serialize(rapidjson::Writer<rapidjson::StringBuffer>* writer) const override;
+	bool Serialize(rapidjson::Document&) const override;
 	const int64_t  _balance;
 	const std::string _name;
 };

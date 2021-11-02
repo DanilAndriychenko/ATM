@@ -2,7 +2,9 @@
 
 #include <string>
 #include <vector>
-
+#include <fstream>
+#include <sstream>
+#include <iostream>
 using CommandName = std::string;
 using Args = std::vector<std::string>;
 
@@ -26,6 +28,23 @@ namespace utils
 	const std::string getStringBuffer(const std::string& filePath);
 }
 
+namespace Exceptions
+{
+	class DeserializeException
+	{
+	public:
+		DeserializeException(const std::string& reason) : _reason(reason) {}
+		~DeserializeException() {}
+		void diagnose()
+		{
+			std::cout << "Deserialization Exception: " << _reason << "; \n";
+		}
+
+	private:
+		std::string _reason;
+	};
+}
+
 /*namespace std
 {
 	template<> struct hash<const std::string>
@@ -36,6 +55,7 @@ namespace utils
 		}
 	};
 }*/
+
 struct StringHasher
 {
 	std::size_t operator()(const std::string& str) const noexcept
