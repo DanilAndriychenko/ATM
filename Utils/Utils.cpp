@@ -20,6 +20,12 @@ const CommandName utils::parseLine(const std::string& line, Args& tokenized)
 	return commandName;
 }
 
+bool utils::matchPhoneNumber(const std::string& str)
+{
+	const std::regex re("\\+\\d?\\d?\\d{11}");
+	return std::regex_match(str, re);
+}
+
 unsigned utils::hashStr(const char* s)
 {
 	// TODO use constexpr for magic nums or maybe consider some another algorithm

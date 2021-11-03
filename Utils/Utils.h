@@ -26,6 +26,8 @@ namespace utils
 	void toLowerCase(std::string& str);
 	
 	const std::string getStringBuffer(const std::string& filePath);
+
+	bool matchPhoneNumber(const std::string&);
 }
 
 namespace Exceptions

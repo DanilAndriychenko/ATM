@@ -3,29 +3,30 @@
 #include <vector>
 
 template <class T>
-class Accounts
+class Cards
 {
+	using deserializationFunct = const std::shared_ptr<T>(*)(const rapidjson::Value&);
 public:
-	Accounts(const std::string& filePath, const std::shared_ptr<T>(*deser)(const rapidjson::Value&));
+	Cards(const std::string& filePath, deserializationFunct funct);
 	
-	~Accounts() {}
+	~Cards() {}
 
-	const std::shared_ptr<T> findAccountByID(const int64_t id);
+	const std::shared_ptr<T> findCardByNumber(const int64_t numb);
 
-	void findAllAccounts(std::vector<T>&) const;
+	void findAllCards(std::vector<T>&) const;
 
-	bool modifyAccount(const T& modified);
+	bool modifyCardData(const T& modified);
 
 private:
 	rapidjson::Document _doc;
 	void writeDocument() const;
 	std::string _filePath;
-	const std::shared_ptr<T>(*_deserialize)(const rapidjson::Value&);
+	deserializationFunct _deserialize;
 };
 
 ////////class implementation////////
 template<class T>
-Accounts<T>::Accounts(const std::string& filePath, const std::shared_ptr<T>(*fptr)(const rapidjson::Value&)) : _filePath(filePath), _deserialize(fptr), _doc()
+Cards<T>::Cards(const std::string& filePath, deserializationFunct funct) : _filePath(filePath), _deserialize(funct), _doc()
 {
 	std::string buffer = utils::getStringBuffer(filePath);
 	InitDocument(buffer, _doc);
@@ -34,7 +35,7 @@ Accounts<T>::Accounts(const std::string& filePath, const std::shared_ptr<T>(*fpt
 }
 
 template <class T>
-void Accounts<T>::findAllAccounts(std::vector<T>& vec) const
+void Cards<T>::findAllCards(std::vector<T>& vec) const
 {
 	if (!vec.empty())
 		vec.clear();
@@ -45,23 +46,23 @@ void Accounts<T>::findAllAccounts(std::vector<T>& vec) const
 }
 
 template <class T>
-const std::shared_ptr<T> Accounts<T>::findAccountByID(const int64_t id)
+const std::shared_ptr<T> Cards<T>::findCardByNumber(const int64_t numb)
 {
 	for (rapidjson::Value::ConstValueIterator itr = _doc.Begin(); itr != _doc.End(); ++itr)
 	{
-		if ((*itr)["id"].GetInt64() == id)
+		if ((*itr)["number"].GetInt64() == numb)
 			return _deserialize(*itr);
 	}
 	return std::shared_ptr<T>(nullptr);
 }
 
 template <class T>
-bool Accounts<T>::modifyAccount(const T& modified)
+bool Cards<T>::modifyCardData(const T& modified)
 {
 
 	for (int idx = 0; idx < (int)_doc.Size(); idx++)
 	{
-		if (_doc[idx]["id"].GetInt64() == modified.getID())
+		if (_doc[idx]["number"].GetInt64() == modified.getNumber())
 		{
 			_doc.Erase(_doc.Begin() + idx--);
 			
@@ -75,7 +76,7 @@ bool Accounts<T>::modifyAccount(const T& modified)
 }
 
 template <class T>
-void Accounts<T>::writeDocument() const
+void Cards<T>::writeDocument() const
 {
 	rapidjson::StringBuffer buffer;
 
