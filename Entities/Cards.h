@@ -7,6 +7,7 @@ class Cards
 {
 	using deserializationFunct = const std::shared_ptr<T>(*)(const rapidjson::Value&);
 public:
+
 	Cards(const std::string& filePath, deserializationFunct funct);
 	
 	~Cards() {}
@@ -18,6 +19,10 @@ public:
 	bool modifyCardData(const T& modified);
 
 private:
+	
+	Cards(Cards const&) = delete;              // Don't Implement
+	void operator=(Cards const&) = delete; // Don't implement
+
 	rapidjson::Document _doc;
 	void writeDocument() const;
 	std::string _filePath;

@@ -2,9 +2,22 @@
 #include "ClientCard.h"
 #include <time.h>
 
-ClientCard::ClientCard(const int64_t number, const std::string& name, const int pin, const int64_t balance, const int expMonth, const int expYear) :
-	Card(number, pin, false), _name(name), _balance(balance), _expiryDate(expMonth, expYear)
+const int64_t ClientCard::maxCreditLimit(100000);
+
+ClientCard::ClientCard(const int number, const CardType type, const std::string& name, const int pin, const int64_t balance, const int expMonth, const int expYear) :
+	Card(number, pin, false),
+	_name(name),
+	_balance(balance),
+	_expiryDate(expMonth, expYear),
+	_type(type),
+	_creditLimit(0)
 {}
+
+void ClientCard::setCreditLimit(const int64_t limit)
+{
+	if (_type == CardType::CREDIT && limit <= maxCreditLimit)
+		_creditLimit = limit;
+}
 
 bool ClientCard::Serialize(rapidjson::Document& doc) const
 {
@@ -16,11 +29,18 @@ bool ClientCard::Serialize(rapidjson::Document& doc) const
 
 	v.AddMember("number", getNumber(), allocator);
 
-	v.AddMember("name", rapidjson::StringRef(_name.c_str()), allocator);
+	v.AddMember("type", static_cast<int>(_type), allocator);
+
+	//v.AddMember("name", rapidjson::StringRef(getName().c_str()), allocator);
+	
+	v.AddMember("name", rapidjson::Value(_name.c_str(), allocator).Move(), allocator);
 
 	v.AddMember("balance", _balance, allocator);
 
 	v.AddMember("pin", getPin(), allocator);
+
+	if (_type == CardType::CREDIT)
+		v.AddMember("creditLimit", _creditLimit, allocator);
 
 	v.AddMember("expMonth", _expiryDate.first, allocator);
 
@@ -33,12 +53,16 @@ bool ClientCard::Serialize(rapidjson::Document& doc) const
 
 const std::shared_ptr<ClientCard> ClientCard::Deserialize(const rapidjson::Value& obj)
 {
-	return std::make_shared<ClientCard>(obj["number"].GetInt64(), 
-									obj["name"].GetString(),
-									obj["pin"].GetInt(),
-									obj["balance"].GetInt64(),
-									obj["expMonth"].GetInt(),
-		                            obj["expYear"].GetInt());
+	std::shared_ptr<ClientCard> res = std::make_shared<ClientCard>(obj["number"].GetInt(),
+																	static_cast<CardType>(obj["type"].GetInt()),
+																	obj["name"].GetString(),
+																	obj["pin"].GetInt(),
+																	obj["balance"].GetInt64(),
+																	obj["expMonth"].GetInt(),
+																	obj["expYear"].GetInt());
+	if (res->getType() == CardType::CREDIT)
+		res->setCreditLimit(obj["creditLimit"].GetInt64());
+	return res;
 }
 
 bool ClientCard::isExpired() const
@@ -52,10 +76,3 @@ bool ClientCard::isExpired() const
 		return true;
 	return false;
 }
-
-//std::ostream& operator<< (std::ostream& os, const User& us)
-//{
-//	os << "User {\n" << "ID: " << us.getID() << "\nPIN: " << us.getPin() << "\nName: " << us.getName() << 
-//		"\nBalance: " << us.getBalance() << '}';
-//	return os;
-//}

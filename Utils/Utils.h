@@ -5,6 +5,9 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
+
+const std::string CLIENTS_DB_PATH("../Resources/clients.json");
+
 using CommandName = std::string;
 using Args = std::vector<std::string>;
 

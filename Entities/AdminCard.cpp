@@ -1,10 +1,10 @@
 #include "AdminCard.h"
 
-AdminCard::AdminCard(const int64_t number, const int pin) : Card(number, pin, true) {}
+AdminCard::AdminCard(const int number, const int pin) : Card(number, pin, true) {}
 
 const std::shared_ptr<AdminCard> AdminCard::Deserialize(const rapidjson::Value& obj)
 {
-	return std::make_shared<AdminCard>(obj["number"].GetInt64(), obj["pin"].GetInt());
+	return std::make_shared<AdminCard>(obj["number"].GetInt(), obj["pin"].GetInt());
 }
 
 bool AdminCard::Serialize(rapidjson::Document& doc) const

@@ -1,1 +1,1 @@
-[{"number":11111,"name":"vovan","balance":3,"pin":1111,"expMonth":11,"expYear":23},{"number":3333,"name":"Anton","balance":10,"pin":1111,"expMonth":11,"expYear":22}]
+[{"number":4321,"type":0,"name":"gleb","balance":41,"pin":1111,"expMonth":11,"expYear":23},{"number":1234,"type":1,"name":"vovan","balance":-186,"pin":1111,"creditLimit":5000,"expMonth":11,"expYear":22}]

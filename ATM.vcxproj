@@ -166,6 +166,7 @@
     <ClCompile Include="Entities\Banknotes.cpp" />
     <ClCompile Include="Entities\JSONItem.cpp" />
     <ClCompile Include="Entities\ClientCard.cpp" />
+    <ClCompile Include="Entities\Transaction.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="States\Authorization.cpp" />
     <ClCompile Include="States\Maintenance.cpp" />
@@ -181,6 +182,7 @@
     <ClInclude Include="Entities\JSONItem.h" />
     <ClInclude Include="Entities\ClientCard.h" />
     <ClInclude Include="Entities\Cards.h" />
+    <ClInclude Include="Entities\Transaction.h" />
     <ClInclude Include="rapidjson\allocators.h" />
     <ClInclude Include="rapidjson\cursorstreamwrapper.h" />
     <ClInclude Include="rapidjson\document.h" />
