@@ -56,7 +56,7 @@ void Transaction::initTransaction(Cards<ClientCard>& cards)
 			_errorMsg = "Reciever doesn`t exist";
 			return;
 		}
-		reciev_ptr->setBalance(reciev_ptr->getBalance() + _sum - _sum * _currentComission);
+		reciev_ptr->setBalance(reciev_ptr->getBalance() + _sum);
 		cards.modifyCardData(*reciev_ptr);
 	}
 	//I assume that phone number has been checked before
