@@ -75,6 +75,8 @@ Transaction::Transaction(Cards<ClientCard>& cards, TransactionType type, const s
 	_isSuccessfull(true),
 	_currentComission(commision),
 	_errorMsg(""),
+	_sender_number(sender->getNumber()),
+	_sender_name(sender->getName()),
 	_id(++freeID)
 {
 	initTransaction(cards);
@@ -90,10 +92,34 @@ Transaction::Transaction(Cards<ClientCard>& cards, TransactionType type, const s
 	_isSuccessfull(true),
 	_currentComission(commision),
 	_errorMsg(""),
+	_sender_number(sender->getNumber()),
+	_sender_name(sender->getName()),
 	_id(++freeID)
 {
 	initTransaction(cards);
 }
+
+Transaction::Transaction(TransactionType type, bool success, const std::string& errorMsg, const int sender_numb, const std::string& sender_name,
+	const int receiver_numb, const std::string& receiver_phone, const int64_t sum,
+	const int year, const int month, const int day, const int hours, const int mins, const int secs) :
+	_type(type),
+	_isSuccessfull(success),
+	_sender_number(sender_numb),
+	_sender_name(sender_name),
+	_receiver(receiver_numb),
+	_phone_number(receiver_phone),
+	_currentComission(commision),
+	_sum(sum),
+	_date_time(year, month, day, hours, mins, secs),
+	_errorMsg(errorMsg),
+	_id(++freeID)
+{
+	if (bankID == _sender.get()->getNumber() % 1000 || _type == TransactionType::CHARITY_TRANSFER)
+		_currentComission = 0.0;
+	if (_type == TransactionType::PHONE_TRANSFER)
+		_currentComission = commision + 0.01;
+}
+
 
 bool Transaction::Serialize(rapidjson::Document& doc) const
 {
@@ -110,9 +136,13 @@ bool Transaction::Serialize(rapidjson::Document& doc) const
 	v.AddMember("type", static_cast<int>(_type), allocator);
 
 	v.AddMember("sender_number", _sender->getNumber(), allocator);
-
-	v.AddMember("reciever_number", _receiver, allocator);
-
+	if(_type == TransactionType::CARD_TRANSFER)
+		v.AddMember("receiver_number", _receiver, allocator);
+	else if(_type == TransactionType::PHONE_TRANSFER)
+		v.AddMember("receiver_phone", rapidjson::Value(_phone_number.c_str(), allocator).Move(), allocator);
+	if(!_isSuccessfull)
+		v.AddMember("errorMsg", rapidjson::Value(_errorMsg.c_str(), allocator).Move(), allocator);
+	
 	v.AddMember("sum", _sum, allocator);
 
 	v.AddMember("year", _date_time._year, allocator);
@@ -132,6 +162,25 @@ bool Transaction::Serialize(rapidjson::Document& doc) const
 	return true;
 }
 
+const std::shared_ptr<Transaction> Transaction::Deserialize(const rapidjson::Value& obj)
+{
+	Transaction::TransactionType type = static_cast<Transaction::TransactionType>(obj["type"].GetInt());
+	bool succ = obj["success"].GetBool();
+	return std::make_shared<Transaction>(type,
+											succ,
+											succ ? "" : obj["errorMsg"].GetString(),
+											obj["sender_number"].GetInt(),
+											obj["sender_name"].GetString(),
+											(type == Transaction::TransactionType::CARD_TRANSFER || type == Transaction::TransactionType::CHARITY_TRANSFER) ? obj["receiver_number"].GetInt() : -1,
+											type == Transaction::TransactionType::PHONE_TRANSFER ? obj["receiver_phone"].GetString() : "",
+											obj["sum"].GetInt64(),
+											obj["year"].GetInt(),
+											obj["month"].GetInt(),
+											obj["day"].GetInt(),
+											obj["hours"].GetInt(),
+											obj["minutes"].GetInt(),
+											obj["seconds"].GetInt());
+}
 
 
 std::ostream& Transaction::print(std::ostream& os) const

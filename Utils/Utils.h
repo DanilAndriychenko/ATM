@@ -7,6 +7,7 @@
 #include <iostream>
 
 const std::string CLIENTS_DB_PATH("../Resources/clients.json");
+const std::string TRANSACTIONS_PATH("../Resources/transactions.json");
 
 using CommandName = std::string;
 using Args = std::vector<std::string>;

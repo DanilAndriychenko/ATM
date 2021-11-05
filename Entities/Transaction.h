@@ -6,6 +6,7 @@
 
 class Transaction final : public JSONItem
 {
+	friend class Transactions;
 public:
 
 	enum class TransactionType
@@ -17,13 +18,13 @@ public:
 
 	struct DateTime
 	{
-		DateTime() :
-			_year(0),
-			_month(0),
-			_day(0),
-			_hours(0),
-			_minutes(0),
-			_secs(0)
+		DateTime(const int year=0, const int month=0, const int day=0, const int hours=0, const int minutes=0, const int secs=0) :
+			_year(year),
+			_month(month),
+			_day(day),
+			_hours(hours),
+			_minutes(minutes),
+			_secs(secs)
 		{}
 
 		~DateTime() {}
@@ -38,12 +39,20 @@ public:
 
 	
 	//101 is charity number
-	Transaction(Cards<ClientCard>& cards, TransactionType type, const std::shared_ptr<ClientCard> sender, const int64_t sum, const int reciever=101);
+	//Transaction(Cards<ClientCard>& cards, TransactionType type, const std::shared_ptr<ClientCard> sender, const int64_t sum, const int reciever=101);
 
-	Transaction(Cards<ClientCard>& cards, TransactionType type, const std::shared_ptr<ClientCard> sender, const int64_t sum, const std::string& ph_numb);
+	//Transaction(Cards<ClientCard>& cards, TransactionType type, const std::shared_ptr<ClientCard> sender, const int64_t sum, const std::string& ph_numb);
+
+	//for deserialization purposes only
+	Transaction(TransactionType type, bool success, const std::string& errorMsg, const int sender_numb, const std::string& sender_name,
+		const int receiver_numb, const std::string& receiver_phone, const int64_t sum,
+		const int year, const int month, const int day, const int hours, const int mins, const int secs);
+
 
 	~Transaction() {}
 	
+	static const std::shared_ptr<Transaction> Deserialize(const rapidjson::Value& obj);
+
 	const std::shared_ptr<ClientCard>& getSender() const { return _sender; }
 	const DateTime& getDate() const { return _date_time; }
 	double getCommision() const { return commision; }
@@ -56,6 +65,8 @@ public:
 	std::ostream& print(std::ostream& os) const;
 
 private:
+	Transaction(Cards<ClientCard>& cards, TransactionType type, const std::shared_ptr<ClientCard> sender, const int64_t sum, const int reciever = 101);
+	Transaction(Cards<ClientCard>& cards, TransactionType type, const std::shared_ptr<ClientCard> sender, const int64_t sum, const std::string& ph_numb);
 	Transaction(const Transaction&) = delete;
 	Transaction& operator=(const Transaction&) = delete;
 	const TransactionType _type;
@@ -75,5 +86,9 @@ private:
 	bool checkBalance(int diff);
 	void initTransaction(Cards<ClientCard>&);
 	bool Serialize(rapidjson::Document&) const override;
+
+	//for deserialization purposes
+	const int _sender_number;
+	const std::string _sender_name;
 };
 

@@ -12,7 +12,7 @@ public:
 	
 	~Cards() {}
 
-	const std::shared_ptr<T> findCardByNumber(const int64_t numb);
+	const std::shared_ptr<T> findCardByNumber(const int numb);
 
 	void findAllCards(std::vector<T>&) const;
 
@@ -51,11 +51,11 @@ void Cards<T>::findAllCards(std::vector<T>& vec) const
 }
 
 template <class T>
-const std::shared_ptr<T> Cards<T>::findCardByNumber(const int64_t numb)
+const std::shared_ptr<T> Cards<T>::findCardByNumber(const int numb)
 {
 	for (rapidjson::Value::ConstValueIterator itr = _doc.Begin(); itr != _doc.End(); ++itr)
 	{
-		if ((*itr)["number"].GetInt64() == numb)
+		if ((*itr)["number"].GetInt() == numb)
 			return _deserialize(*itr);
 	}
 	return std::shared_ptr<T>(nullptr);
@@ -67,7 +67,7 @@ bool Cards<T>::modifyCardData(const T& modified)
 
 	for (int idx = 0; idx < (int)_doc.Size(); idx++)
 	{
-		if (_doc[idx]["number"].GetInt64() == modified.getNumber())
+		if (_doc[idx]["number"].GetInt() == modified.getNumber())
 		{
 			_doc.Erase(_doc.Begin() + idx--);
 			

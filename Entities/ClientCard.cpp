@@ -54,13 +54,13 @@ bool ClientCard::Serialize(rapidjson::Document& doc) const
 const std::shared_ptr<ClientCard> ClientCard::Deserialize(const rapidjson::Value& obj)
 {
 	std::shared_ptr<ClientCard> res = std::make_shared<ClientCard>(obj["number"].GetInt(),
-																	static_cast<CardType>(obj["type"].GetInt()),
-																	obj["name"].GetString(),
-																	obj["pin"].GetInt(),
-																	obj["balance"].GetInt64(),
-																	obj["expMonth"].GetInt(),
-																	obj["expYear"].GetInt());
-	if (res->getType() == CardType::CREDIT)
+																				static_cast<ClientCard::CardType>(obj["type"].GetInt()),
+																				obj["name"].GetString(),
+																				obj["pin"].GetInt(),
+																				obj["balance"].GetInt64(),
+																				obj["expMonth"].GetInt(),
+																				obj["expYear"].GetInt());
+	if (res->getType() == ClientCard::CardType::CREDIT)
 		res->setCreditLimit(obj["creditLimit"].GetInt64());
 	return res;
 }

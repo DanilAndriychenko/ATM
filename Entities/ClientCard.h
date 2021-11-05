@@ -12,8 +12,9 @@ public:
 	};
 
 	ClientCard(const int number, const CardType type, const std::string& name, const int pin, const int64_t balance, const int expMonth, const int expYear);
-	~ClientCard() {}
+
 	static const std::shared_ptr<ClientCard> Deserialize(const rapidjson::Value& obj);
+
 	const int64_t getBalance() const { return _balance; }
 	const std::string& getName() const { return _name; }
 	const int64_t getCreditLimit() const { return _creditLimit; }
