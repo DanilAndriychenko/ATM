@@ -18,3 +18,5 @@ private:
 };
 
 void InitDocument(const std::string&, rapidjson::Document&);
+
+void writeDocument(const rapidjson::Document& doc, const std::string& filePath);

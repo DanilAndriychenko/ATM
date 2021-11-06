@@ -12,11 +12,11 @@ public:
 
 	~Transactions() {}
 
-	bool makeTransaction(Cards<ClientCard>& cards, Transaction::TransactionType type, const std::shared_ptr<ClientCard> sender, const int64_t sum, const int reciever = 101);
+	const std::shared_ptr<Transaction> makeTransaction(Cards<ClientCard>& cards, Transaction::TransactionType type, const std::shared_ptr<ClientCard> sender, const int64_t sum, const int receiver = 111);
 
-	bool makeTransaction(Cards<ClientCard>& cards, const std::shared_ptr<ClientCard> sender, const int64_t sum, const std::string& phone_number);
+	const std::shared_ptr<Transaction> makeTransaction(Cards<ClientCard>& cards, const std::shared_ptr<ClientCard> sender, const int64_t sum, const std::string& phone_number);
 
-	void findTransactionsBySenderNumber(std::vector<Transaction>&);
+	void findTransactionsByClientNumber(std::vector<Transaction>& vec, const int numb);
 
 	const std::shared_ptr<Transaction> findTransactionByID(const int64_t id);
 
@@ -26,5 +26,5 @@ private:
 	Transactions(const Transactions&) = delete;
 	void operator=(const Transactions&) = delete;
 	std::string _filePath;
-
+	rapidjson::Document _doc;
 };

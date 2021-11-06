@@ -3,17 +3,19 @@
 #include <time.h>
 #include <cmath>
 
-int64_t Transaction::freeID = 0;
+//int64_t Transaction::freeID = 0;
 //2.5%
 const double Transaction::commision(0.025);
 const int Transaction::bankID(555);
 
+int64_t Transaction::hasher()
+{
+	return ((_date_time._secs * 37 ) ^ _date_time._minutes) ^ (_date_time._day * _date_time._month * _date_time._year);
+}
+
 bool Transaction::checkBalance(int diff)
 {
-	//check whether debit or credit 
-	if (_sender.get()->getBalance() - _sum - diff < (_sender->getType() == ClientCard::CardType::DEBIT ? 0 : -(_sender->getCreditLimit())))
-		return false;
-	return true;
+	return (_type == Transaction::TransactionType::CASH_IN) || (_sender.get()->getBalance() - _sum - diff >= (_sender->getType() == ClientCard::CardType::DEBIT ? 0 : -(_sender->getCreditLimit())));
 }
 
 void Transaction::initTransaction(Cards<ClientCard>& cards)
@@ -26,7 +28,7 @@ void Transaction::initTransaction(Cards<ClientCard>& cards)
 	_date_time._hours = aTime->tm_hour;
 	_date_time._minutes = aTime->tm_min;
 	_date_time._secs = aTime->tm_sec;
-
+	_id = hasher();
 	if (_sender->getNumber() == _receiver)
 	{
 		_isSuccessfull = false;
@@ -60,8 +62,10 @@ void Transaction::initTransaction(Cards<ClientCard>& cards)
 		cards.modifyCardData(*reciev_ptr);
 	}
 	//I assume that phone number has been checked before
-
-	_sender->setBalance(_sender->getBalance() - _sum - diff);
+	if(_type != TransactionType::CASH_IN)
+		_sender->setBalance(_sender->getBalance() - _sum - diff);
+	else 
+		_sender->setBalance(_sender->getBalance() + _sum - diff);
 	cards.modifyCardData(*_sender);
 }
 
@@ -77,7 +81,7 @@ Transaction::Transaction(Cards<ClientCard>& cards, TransactionType type, const s
 	_errorMsg(""),
 	_sender_number(sender->getNumber()),
 	_sender_name(sender->getName()),
-	_id(++freeID)
+	_id(0)
 {
 	initTransaction(cards);
 }
@@ -94,7 +98,7 @@ Transaction::Transaction(Cards<ClientCard>& cards, TransactionType type, const s
 	_errorMsg(""),
 	_sender_number(sender->getNumber()),
 	_sender_name(sender->getName()),
-	_id(++freeID)
+	_id(0)
 {
 	initTransaction(cards);
 }
@@ -112,9 +116,10 @@ Transaction::Transaction(TransactionType type, bool success, const std::string& 
 	_sum(sum),
 	_date_time(year, month, day, hours, mins, secs),
 	_errorMsg(errorMsg),
-	_id(++freeID)
+	_id(0)
 {
-	if (bankID == _sender.get()->getNumber() % 1000 || _type == TransactionType::CHARITY_TRANSFER)
+	_id = hasher();
+	if (bankID == _sender_number % 1000 || _type == TransactionType::CHARITY_TRANSFER)
 		_currentComission = 0.0;
 	if (_type == TransactionType::PHONE_TRANSFER)
 		_currentComission = commision + 0.01;
@@ -135,7 +140,10 @@ bool Transaction::Serialize(rapidjson::Document& doc) const
 
 	v.AddMember("type", static_cast<int>(_type), allocator);
 
-	v.AddMember("sender_number", _sender->getNumber(), allocator);
+	v.AddMember("client_number", _sender->getNumber(), allocator);
+
+	v.AddMember("client_name", rapidjson::Value(_sender_name.c_str(), allocator).Move(), allocator);
+
 	if(_type == TransactionType::CARD_TRANSFER)
 		v.AddMember("receiver_number", _receiver, allocator);
 	else if(_type == TransactionType::PHONE_TRANSFER)
@@ -169,9 +177,9 @@ const std::shared_ptr<Transaction> Transaction::Deserialize(const rapidjson::Val
 	return std::make_shared<Transaction>(type,
 											succ,
 											succ ? "" : obj["errorMsg"].GetString(),
-											obj["sender_number"].GetInt(),
-											obj["sender_name"].GetString(),
-											(type == Transaction::TransactionType::CARD_TRANSFER || type == Transaction::TransactionType::CHARITY_TRANSFER) ? obj["receiver_number"].GetInt() : -1,
+											obj["client_number"].GetInt(),
+											obj["client_name"].GetString(),
+											(type == Transaction::TransactionType::CARD_TRANSFER) ? obj["receiver_number"].GetInt() : -1,
 											type == Transaction::TransactionType::PHONE_TRANSFER ? obj["receiver_phone"].GetString() : "",
 											obj["sum"].GetInt64(),
 											obj["year"].GetInt(),
@@ -186,14 +194,25 @@ const std::shared_ptr<Transaction> Transaction::Deserialize(const rapidjson::Val
 std::ostream& Transaction::print(std::ostream& os) const
 {
 	os <<"-------------------------------TRANSACTION INFO-------------------------------\n";
-	os << "| Sender card number: " << _sender->getNumber() << '\n';
-	os << "| Sender name: " << _sender->getName() << '\n';
-	if (_type == TransactionType::PHONE_TRANSFER)
+	os << "| Client card number: " << _sender_number << '\n';
+	os << "| Client name: " << _sender_name << '\n';
+	switch (_type)
+	{
+	case TransactionType::PHONE_TRANSFER:
 		os << "| Receiver phone number: " << _phone_number << '\n';
-	else if (_type == TransactionType::CARD_TRANSFER)
+		break;
+	case TransactionType::CARD_TRANSFER:
 		os << "| Receiver card number: " << _receiver << '\n';
-	else
+		break;
+	case TransactionType::CHARITY_TRANSFER:
 		os << "| Charity donation \n";
+		break;
+	case TransactionType::CASH_IN:
+		os << "| Cash accrual \n";
+		break;
+	default :
+		os << "| Cash withrawal\n";
+	}
 	os << "| Transfer sum: " << _sum << '\n';
 	os << "| Comission: " << _currentComission * 100 << '%' << '\n';
 	os << "| Date: " << _date_time._day << '.' << _date_time._month << '.' << _date_time._year << '\n';

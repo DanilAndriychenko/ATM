@@ -24,7 +24,7 @@ private:
 	void operator=(Cards const&) = delete; // Don't implement
 
 	rapidjson::Document _doc;
-	void writeDocument() const;
+//	void writeDocument() const;
 	std::string _filePath;
 	deserializationFunct _deserialize;
 };
@@ -46,7 +46,8 @@ void Cards<T>::findAllCards(std::vector<T>& vec) const
 		vec.clear();
 	for (rapidjson::Value::ConstValueIterator itr = _doc.Begin(); itr != _doc.End(); ++itr)
 	{
-		vec.push_back(*(_deserialize(*itr).get()));
+		vec.push_back(*_deserialize(*itr));
+		//vec.push_back(*(_deserialize(*itr).get()));
 	}
 }
 
@@ -73,26 +74,26 @@ bool Cards<T>::modifyCardData(const T& modified)
 			
 			modified.doSerialize(_doc);
 
-			writeDocument();
+			writeDocument(_doc, _filePath);
 			return true;
 		}
 	}
 	return false;
 }
 
-template <class T>
-void Cards<T>::writeDocument() const
-{
-	rapidjson::StringBuffer buffer;
-
-	buffer.Clear();
-
-	rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
-	_doc.Accept(writer);
-
-	std::ofstream f(_filePath);
-
-	f << buffer.GetString();
-	f.flush();
-	f.close();
-}
+//template <class T>
+//void Cards<T>::writeDocument() const
+//{
+//	rapidjson::StringBuffer buffer;
+//
+//	buffer.Clear();
+//
+//	rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
+//	_doc.Accept(writer);
+//
+//	std::ofstream f(_filePath);
+//
+//	f << buffer.GetString();
+//	f.flush();
+//	f.close();
+//}

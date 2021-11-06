@@ -1,6 +1,5 @@
 #pragma once
 
-//#include "JSONItem.h"
 #include "ClientCard.h"
 #include "Cards.h"
 
@@ -14,6 +13,8 @@ public:
 		CARD_TRANSFER = 0,
 		PHONE_TRANSFER = 1,
 		CHARITY_TRANSFER = 2,
+		CASH_IN = 3,
+		CASH_OUT = 4
 	};
 
 	struct DateTime
@@ -37,18 +38,15 @@ public:
 		int _secs;
 	};
 
-	
-	//101 is charity number
-	//Transaction(Cards<ClientCard>& cards, TransactionType type, const std::shared_ptr<ClientCard> sender, const int64_t sum, const int reciever=101);
-
-	//Transaction(Cards<ClientCard>& cards, TransactionType type, const std::shared_ptr<ClientCard> sender, const int64_t sum, const std::string& ph_numb);
-
+	//ATTENTION! Do not create Transaction with constructors manually; use make_transaction(...) instead
 	//for deserialization purposes only
 	Transaction(TransactionType type, bool success, const std::string& errorMsg, const int sender_numb, const std::string& sender_name,
 		const int receiver_numb, const std::string& receiver_phone, const int64_t sum,
 		const int year, const int month, const int day, const int hours, const int mins, const int secs);
 
-
+	Transaction(Cards<ClientCard>& cards, TransactionType type, const std::shared_ptr<ClientCard> sender, const int64_t sum, const int reciever = 111);
+	Transaction(Cards<ClientCard>& cards, TransactionType type, const std::shared_ptr<ClientCard> sender, const int64_t sum, const std::string& ph_numb);
+	
 	~Transaction() {}
 	
 	static const std::shared_ptr<Transaction> Deserialize(const rapidjson::Value& obj);
@@ -65,27 +63,28 @@ public:
 	std::ostream& print(std::ostream& os) const;
 
 private:
-	Transaction(Cards<ClientCard>& cards, TransactionType type, const std::shared_ptr<ClientCard> sender, const int64_t sum, const int reciever = 101);
-	Transaction(Cards<ClientCard>& cards, TransactionType type, const std::shared_ptr<ClientCard> sender, const int64_t sum, const std::string& ph_numb);
-	Transaction(const Transaction&) = delete;
-	Transaction& operator=(const Transaction&) = delete;
+	
+	/*Transaction(const Transaction&) = delete;
+	Transaction& operator=(const Transaction&) = delete;*/
 	const TransactionType _type;
 	DateTime _date_time;
 	int64_t _sum;
 	std::shared_ptr<ClientCard> _sender;
 	const int _receiver;
 	const std::string _phone_number;
-	static int64_t freeID;
+	//static int64_t freeID;
 	const static double commision;
 	//stands for 3 last digits of card number
 	const static int bankID;
-	const int64_t _id;
+	int64_t _id;
 	double _currentComission;
 	bool _isSuccessfull;
 	std::string _errorMsg;
 	bool checkBalance(int diff);
 	void initTransaction(Cards<ClientCard>&);
 	bool Serialize(rapidjson::Document&) const override;
+
+	int64_t hasher();
 
 	//for deserialization purposes
 	const int _sender_number;
