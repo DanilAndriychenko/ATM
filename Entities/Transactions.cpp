@@ -10,7 +10,7 @@ Transactions::Transactions(const std::string& filePath) : _filePath(filePath), _
 }
 
 //add operation with banknote bank??!!!!!
-const std::shared_ptr<Transaction> Transactions::makeTransaction(Transaction::TransactionType type, const std::shared_ptr<ClientCard> sender, const int64_t sum, const int receiver)
+const std::shared_ptr<Transaction> Transactions::makeTransaction(Transaction::TransactionType type, ClientCard* sender, const int64_t sum, const int receiver)
 {
 	std::shared_ptr<Transaction> ptr = std::make_shared<Transaction>(type,
 																	sender,
@@ -21,7 +21,7 @@ const std::shared_ptr<Transaction> Transactions::makeTransaction(Transaction::Tr
 	return ptr;
 }
 
-const std::shared_ptr<Transaction> Transactions::makeTransaction(const std::shared_ptr<ClientCard> sender, const int64_t sum, const std::string& phone_number)
+const std::shared_ptr<Transaction> Transactions::makeTransaction(ClientCard* sender, const int64_t sum, const std::string& phone_number)
 {
 	std::shared_ptr<Transaction> ptr = std::make_shared<Transaction>(Transaction::TransactionType::PHONE_TRANSFER, 
 																	sender, 

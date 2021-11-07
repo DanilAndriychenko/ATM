@@ -3,7 +3,7 @@
 #include <time.h>
 #include <cmath>
 
-//int64_t Transaction::freeID = 0;
+
 //2.5%
 const double Transaction::commision(0.025);
 const int Transaction::bankID(555);
@@ -15,7 +15,7 @@ int64_t Transaction::hasher()
 
 bool Transaction::checkBalance(int diff)
 {
-	return (_type == Transaction::TransactionType::CASH_IN) || (_sender.get()->getBalance() - _sum - diff >= (_sender->getType() == ClientCard::CardType::DEBIT ? 0 : -(_sender->getCreditLimit())));
+	return (_type == Transaction::TransactionType::CASH_IN) || (_sender->getBalance() - _sum - diff >= (_sender->getType() == ClientCard::CardType::DEBIT ? 0 : -(_sender->getCreditLimit())));
 }
 
 void Transaction::initTransaction()
@@ -36,7 +36,7 @@ void Transaction::initTransaction()
 		return;
 	}
 
-	if (bankID == _sender.get()->getNumber() % 1000 || _type == TransactionType::CHARITY_TRANSFER)
+	if (bankID == _sender->getNumber() % 1000 || _type == TransactionType::CHARITY_TRANSFER)
 		_currentComission = 0.0;
 	if (_type == TransactionType::PHONE_TRANSFER)
 		_currentComission = commision + 0.01;
@@ -72,7 +72,7 @@ void Transaction::initTransaction()
 	cards.modifyCardData(*_sender);
 }
 
-Transaction::Transaction(TransactionType type, const std::shared_ptr<ClientCard> sender, const int64_t sum, const int reciever) :
+Transaction::Transaction(TransactionType type, ClientCard* sender, const int64_t sum, const int reciever) :
 	_type(type),
 	_sender(sender),
 	_receiver(reciever),
@@ -89,7 +89,7 @@ Transaction::Transaction(TransactionType type, const std::shared_ptr<ClientCard>
 	initTransaction();
 }
 
-Transaction::Transaction(TransactionType type, const std::shared_ptr<ClientCard> sender, const int64_t sum, const std::string& ph_numb) :
+Transaction::Transaction(TransactionType type, ClientCard* sender, const int64_t sum, const std::string& ph_numb) :
 	_type(type),
 	_sender(sender),
 	_receiver(-1),

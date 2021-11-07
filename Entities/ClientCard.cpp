@@ -13,10 +13,14 @@ ClientCard::ClientCard(const int number, const CardType type, const std::string&
 	_creditLimit(0)
 {}
 
-void ClientCard::setCreditLimit(const int64_t limit)
+bool ClientCard::setCreditLimit(const int64_t limit)
 {
 	if (_type == CardType::CREDIT && limit <= maxCreditLimit)
+	{
 		_creditLimit = limit;
+		return true;
+	}
+	return false;
 }
 
 bool ClientCard::Serialize(rapidjson::Document& doc) const

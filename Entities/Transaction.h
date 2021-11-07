@@ -5,7 +5,6 @@
 
 class Transaction final : public JSONItem
 {
-	friend class Transactions;
 public:
 
 	enum class TransactionType
@@ -44,14 +43,14 @@ public:
 		const int receiver_numb, const std::string& receiver_phone, const int64_t sum,
 		const int year, const int month, const int day, const int hours, const int mins, const int secs);
 
-	Transaction(TransactionType type, const std::shared_ptr<ClientCard> sender, const int64_t sum, const int reciever = 111);
-	Transaction(TransactionType type, const std::shared_ptr<ClientCard> sender, const int64_t sum, const std::string& ph_numb);
+	Transaction(TransactionType type, ClientCard* sender, const int64_t sum, const int reciever = 111);
+	Transaction(TransactionType type, ClientCard* sender, const int64_t sum, const std::string& ph_numb);
 	
 	~Transaction() {}
 	
 	static const std::shared_ptr<Transaction> Deserialize(const rapidjson::Value& obj);
 
-	const std::shared_ptr<ClientCard>& getSender() const { return _sender; }
+	const ClientCard* getSender() const { return _sender; }
 	const DateTime& getDate() const { return _date_time; }
 	double getCommision() const { return commision; }
 	int64_t getSum() const { return _sum; }
@@ -69,10 +68,9 @@ private:
 	const TransactionType _type;
 	DateTime _date_time;
 	int64_t _sum;
-	std::shared_ptr<ClientCard> _sender;
+	ClientCard* _sender;
 	const int _receiver;
 	const std::string _phone_number;
-	//static int64_t freeID;
 	const static double commision;
 	//stands for 3 last digits of card number
 	const static int bankID;
