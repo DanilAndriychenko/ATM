@@ -95,7 +95,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <DisableLanguageExtensions>false</DisableLanguageExtensions>
-      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -163,13 +163,13 @@
     <ClCompile Include="Entities\AdminCard.cpp" />
     <ClCompile Include="Entities\ATM.cpp" />
     <ClCompile Include="Entities\BanknoteBank.cpp" />
-    <ClCompile Include="Entities\Banknotes.cpp" />
     <ClCompile Include="Entities\JSONItem.cpp" />
     <ClCompile Include="Entities\ClientCard.cpp" />
     <ClCompile Include="Entities\Transaction.cpp" />
     <ClCompile Include="Entities\Transactions.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="States\Authorization.cpp" />
+    <ClCompile Include="States\MainActions.cpp" />
     <ClCompile Include="States\Maintenance.cpp" />
     <ClCompile Include="States\State.cpp" />
     <ClCompile Include="Utils\Utils.cpp" />
@@ -179,7 +179,6 @@
     <ClInclude Include="Entities\AdminCard.h" />
     <ClInclude Include="Entities\ATM.h" />
     <ClInclude Include="Entities\BanknoteBank.h" />
-    <ClInclude Include="Entities\Banknotes.h" />
     <ClInclude Include="Entities\JSONItem.h" />
     <ClInclude Include="Entities\ClientCard.h" />
     <ClInclude Include="Entities\Cards.h" />
@@ -228,6 +227,11 @@
     <ClInclude Include="States\Maintenance.h" />
     <ClInclude Include="States\State.h" />
     <ClInclude Include="Utils\Utils.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\banknotes.json" />
+    <Content Include="Resources\clients.json" />
+    <Content Include="Resources\transactions.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

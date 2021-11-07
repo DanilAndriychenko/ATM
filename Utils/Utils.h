@@ -52,17 +52,6 @@ namespace Exceptions
 	};
 }
 
-/*namespace std
-{
-	template<> struct hash<const std::string>
-	{
-		std::size_t operator()(const std::string& commandName) const noexcept
-		{
-			return utils::hashStr(commandName.c_str());
-		}
-	};
-}*/
-
 struct StringHasher
 {
 	std::size_t operator()(const std::string& str) const noexcept

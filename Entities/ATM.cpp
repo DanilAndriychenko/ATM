@@ -81,7 +81,7 @@ void ATM::addMoney(const int banknote, const int numberOfBanknotes)
     }
 }
 
-ATM::ATM(): _currentUser(nullptr), _currentState{std::make_shared<Authorization>()},
+ATM::ATM(): _currentCard(nullptr), _currentState{std::make_shared<Authorization>()},
             _availableBanknotes(BanknoteBank::getInstance())
 {
 }
