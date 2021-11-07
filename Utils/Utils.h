@@ -6,9 +6,9 @@
 #include <sstream>
 #include <iostream>
 
-const std::string CLIENTS_DB_PATH("../Resources/clients.json");
-const std::string TRANSACTIONS_PATH("../Resources/transactions.json");
-const std::string BANKNOTE_BANK_PATH("../Resources/banknotes.json");
+const std::string CLIENTS_DB_PATH("Resources/clients.json");
+const std::string TRANSACTIONS_PATH("Resources/transactions.json");
+const std::string BANKNOTE_BANK_PATH("Resources/banknotes.json");
 
 using CommandName = std::string;
 using Args = std::vector<std::string>;
