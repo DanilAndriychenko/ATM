@@ -28,6 +28,15 @@ bool utils::matchPhoneNumber(const std::string& str)
 	return std::regex_match(str, re);
 }
 
+void utils::printBanknotes(int nominal, int quant)
+{
+	std::string filePath = "Resources/" + std::to_string(nominal) + ".txt";
+	std::ifstream f(filePath);
+	if (f.is_open())
+		std::cout << f.rdbuf();
+	std::cout << "X " << quant;
+}
+
 unsigned utils::hashStr(const char* s)
 {
 	// TODO use constexpr for magic nums or maybe consider some another algorithm

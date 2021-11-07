@@ -36,6 +36,8 @@ namespace utils
 	const std::string getStringBuffer(const std::string& filePath);
 
 	bool matchPhoneNumber(const std::string&);
+
+	void printBanknotes(int nominal, int quant);
 }
 
 namespace Exceptions
