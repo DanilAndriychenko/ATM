@@ -83,7 +83,7 @@ bool ClientCard::isExpired() const
 
     int month = 1 + aTime->tm_mon;
     int year = aTime->tm_year + 1900;
-    if (_expiryDate.second > year || (_expiryDate.second == year && _expiryDate.first > month))
+    if (_expiryDate.second < year || (_expiryDate.second == year && _expiryDate.first < month))
         return true;
     return false;
 }
