@@ -2,8 +2,8 @@
 
 void InitDocument(const std::string& s, rapidjson::Document& doc)
 {
-	if (s.empty())
-		throw Exceptions::DeserializeException("Wrong file path!");
+	//if (s.empty())
+	//	throw Exceptions::DeserializeException("Wrong file path!");
 
 	std::string validJson(s);
 
