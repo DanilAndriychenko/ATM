@@ -3,6 +3,8 @@
 
 #include <iostream>
 
+#include "../States/MainActions.h"
+
 ATM& ATM::getATM()
 {
     static ATM singleton;
@@ -97,12 +99,12 @@ bool ATM::getSumAsBanknotes(int sum, std::unordered_map<Banknote, int>& sumInBan
             const int maxNumOfBanknotesAvailable = _availableBanknotes.getNumOfBanknotes(*rit);
             if (numOfBanknotesForSum <= maxNumOfBanknotesAvailable)
             {
-                sumInBanknotes.at(*rit) = numOfBanknotesForSum;
+                sumInBanknotes.emplace(*rit, numOfBanknotesForSum);
                 sum -= numOfBanknotesForSum * *rit;
             }
             else
             {
-                sumInBanknotes.at(*rit) = maxNumOfBanknotesAvailable;
+                sumInBanknotes.emplace(*rit, maxNumOfBanknotesAvailable);
                 sum -= maxNumOfBanknotesAvailable * *rit;
             }
         }
@@ -110,7 +112,7 @@ bool ATM::getSumAsBanknotes(int sum, std::unordered_map<Banknote, int>& sumInBan
     return sum == 0;
 }
 
-void ATM::cashOut(int sum)
+bool ATM::cashOut(int sum)
 {
     std::unordered_map<Banknote, int> sumInBanknotes;
     if(getSumAsBanknotes(sum, sumInBanknotes))
@@ -119,9 +121,7 @@ void ATM::cashOut(int sum)
         {
             _availableBanknotes.cashOut(bToNum.first, bToNum.second);
         }
+        return true;
     }
-    else
-    {
-        std::cout << "Sorry the sum is not available.\n";
-    }
+    return false;
 }

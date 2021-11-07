@@ -1,10 +1,15 @@
-#include "Entities/Cards.h"
+#include "Cards.h"
 
 AbstractCards::~AbstractCards() {}
 
-ClientCards::ClientCards() : _cards(new AbstractCards::Cards<ClientCard>(CLIENTS_DB_PATH)) {}
+ClientCards::ClientCards() : _cards(new Cards<ClientCard>(CLIENTS_DB_PATH)) {}
 
 AdminCards::AdminCards() : _cards(new AbstractCards::Cards<AdminCard>(ADMINS_DB_PATH)) {}
+
+ClientCards::~ClientCards()
+{
+	delete _cards;
+}
 
 const std::shared_ptr<ClientCard> ClientCards::findCardByNumber(const int numb)
 {
@@ -35,4 +40,9 @@ void AdminCards::findAllCards(std::vector<AdminCard>& vec) const
 bool AdminCards::modifyCardData(const AdminCard& modified)
 {
 	return _cards->modifyCardData(modified);
+}
+
+AdminCards::~AdminCards()
+{
+	delete _cards;
 }

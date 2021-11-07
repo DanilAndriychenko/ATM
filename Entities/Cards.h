@@ -22,7 +22,7 @@ public:
 		return instance;
 	}
 
-	~ClientCards() { delete _cards; }
+	~ClientCards();
 
 	const std::shared_ptr<ClientCard> findCardByNumber(const int numb);
 
@@ -47,7 +47,7 @@ public:
 		return instance;
 	}
 
-	~AdminCards() { delete _cards; }
+	~AdminCards();
 
 	const std::shared_ptr<AdminCard> findCardByNumber(const int numb);
 
@@ -62,7 +62,6 @@ private:
 	AdminCards();
 	Cards<AdminCard>* _cards;
 };
-
 
 
 template <class T>
@@ -142,5 +141,3 @@ bool AbstractCards::Cards<T>::modifyCardData(const T& modified)
 	}
 	return false;
 }
-
-

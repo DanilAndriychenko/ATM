@@ -4,13 +4,12 @@
 class Authorization : public State
 {
 public:
-    Authorization(): State(_commandsForThisState)
-    {
-    };
-
-    ~Authorization() override
-    {
-    };
+    
+    static constexpr int numOfDigitsInLogin = 5;
+    static constexpr int numOfDigitsInPassword = 4;
+    
+    Authorization(): State(_commandsForThisState){};
+    ~Authorization() override{};
     Authorization(const Authorization& other) = delete;
     Authorization& operator=(const Authorization& other) = delete;
 
@@ -20,9 +19,5 @@ private:
     static CommandToDataMap _commandsForThisState;
 
     static bool authorize(Args&);
-    static bool isID(std::string& idString, int& result);
-    static bool isPassword(std::string& passwordString, int& res);
 
-    static constexpr int numOfDigitsInLogin = 5;
-    static constexpr int numOfDigitsInPassword = 4;    
 };

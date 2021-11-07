@@ -14,11 +14,12 @@ public:
 private:
     static CommandToDataMap _commandsForThisState;
 
-    static bool quite(Args&) { return false; }
-    static bool showBalance(Args&) { return false; }
-    static bool cashOut(Args&) { return false; }
-    static bool cashIn(Args&) { return false; }
-    static bool changePassword(Args&) { return false; }
-    static bool transferMoneyToAnotherAccount(Args&) { return false; }
-    static bool transferMoneyToPhoneAccount(Args&) { return false; }
+    //return value means if we need to go to next state 
+    static bool quite(Args&) { return true; }
+    static bool showBalance(Args&);
+    static bool cashOut(Args&);
+    static bool cashIn(Args&);
+    static bool changePassword(Args&);
+    static bool transferMoneyToAnotherAccount(Args&);
+    static bool transferMoneyToPhoneAccount(Args&);
 };

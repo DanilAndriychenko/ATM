@@ -25,7 +25,7 @@ public:
 	std::shared_ptr<State> getCurrentState() const { return _currentState; }
 
 	void cashOut(const Banknote, const int numberOfBanknotes);
-	void cashOut(const int sum);
+	bool cashOut(const int sum);
 	void addMoney(const Banknote, const int);
 	int getTotal() const;
 	void printBanknotesNumber(const Banknote) const;

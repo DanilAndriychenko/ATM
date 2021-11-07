@@ -1,6 +1,8 @@
 #include "Utils.h"
 #include <regex>
 
+#include "../States/Authorization.h"
+
 const CommandName utils::parseLine(const std::string& line, Args& tokenized)
 {
 	if (!tokenized.empty()) tokenized.clear();
@@ -64,4 +66,42 @@ const std::string utils::getStringBuffer(const std::string& filePath)
 	buffer << f.rdbuf();
 	f.close();
 	return buffer.str();
+}
+
+
+
+bool utils::isPassword(std::string& passwordString, int& res)
+{
+	if (utils::isInt(passwordString))
+	{
+		const int id = std::stoi(passwordString);
+		const int numOfDigits = id / pow(10, Authorization::numOfDigitsInPassword - 1);
+		if (numOfDigits > 0 && numOfDigits < 10)
+		{
+			res = id;
+			return true;
+		}
+		std::cout << "Password must contain 4 digits\n";
+		return false;
+	}
+	std::cout << "Password can contain only digits\n";
+	return false;
+}
+
+bool utils::isID(std::string& idString, int& result)
+{
+    if (utils::isInt(idString))
+    {
+        const int id = std::stoi(idString);
+        const int numOfDigits = id / pow(10, Authorization::numOfDigitsInLogin - 1);
+        if (numOfDigits > 0 && numOfDigits < 10)
+        {
+            result = id;
+            return true;
+        }
+        std::cout << "ID must contain" << Authorization::numOfDigitsInLogin << " digits\n";
+        return false;
+    }
+    std::cout << "ID can contain only digits\n";
+    return false;
 }

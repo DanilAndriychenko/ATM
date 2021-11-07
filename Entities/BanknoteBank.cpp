@@ -24,12 +24,21 @@ int BanknoteBank::getTotal() const
 
 int BanknoteBank::getNumOfBanknotes(const Banknote b) const
 {
-    return _availableBanknotes.at(b);
+    if(_availableBanknotes.contains(b))
+        return _availableBanknotes.at(b);
+    return 0;
 }
 
 void BanknoteBank::addBanknotes(const Banknote b, const int numToAdd)
 {
-    _availableBanknotes.at(b) += numToAdd;
+    if(_availableBanknotes.contains(b))
+    {
+        _availableBanknotes.at(b) += numToAdd;
+    }
+    else
+    {
+        _availableBanknotes.emplace(b, numToAdd);
+    }
 }
 
 void BanknoteBank::cashOut(const Banknote b, const int num)
@@ -43,6 +52,7 @@ void BanknoteBank::printAvailableBanknotes()
     {
         std::cout << b << ' ';
     }
+    std::cout << '\n';
 }
 
 void BanknoteBank::printBanknotesNum() const

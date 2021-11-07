@@ -28,6 +28,8 @@ namespace utils
 
 	bool isDouble(const std::string& str);
 	bool isInt(const std::string& str);
+    bool isPassword(std::string& passwordString, int& res);
+    bool isID(std::string& idString, int& result);
 
 	void toLowerCase(std::string& str);
 	
