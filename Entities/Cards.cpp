@@ -1,4 +1,4 @@
-#include "Entities/Cards.h"
+#include "Cards.h"
 
 AbstractCards::~AbstractCards() {}
 
