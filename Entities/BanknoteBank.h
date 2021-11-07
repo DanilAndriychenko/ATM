@@ -19,9 +19,9 @@ public:
 
     int getNumOfBanknotes(const Banknote) const;
     int getTotal() const;
+    void printBanknotesNum() const;
     void addBanknotes(const Banknote, const int);
     void cashOut(const Banknote, const int);
-    void printBanknotesNum() const;
     
     static bool banknoteExists(const Banknote b) {return existingBanknotes.contains(b);}
     static void printAvailableBanknotes();

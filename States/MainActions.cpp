@@ -1,7 +1,10 @@
 ﻿#include "MainActions.h"
 
+#include <memory>
+
 #include "Authorization.h"
 #include "../Entities/ATM.h"
+#include "../Entities/Transactions.h"
 #include "../Entities/ClientCard.h"
 
 MainActions::CommandToDataMap MainActions::_commandsForThisState
@@ -11,8 +14,9 @@ MainActions::CommandToDataMap MainActions::_commandsForThisState
     {"cashin", {"empty description", &MainActions::cashIn}},
     {"changepassword", {"empty description", &MainActions::changePassword}},
     {"transfermoneytoanotheraccount", {"empty description", &MainActions::transferMoneyToAnotherAccount}},
-    {"transfermoneytophoneaccount", {"empty description", &MainActions::transferMoneyToPhoneAccount}},
-    {"quite", {"empty description", &MainActions::quite}},
+    {"transfermoneytophoneaccount", {"transfers money to account of other bank user", &MainActions::transferMoneyToPhoneAccount}},
+    {"showtransactions", {"prints the list of all user transactions", &MainActions::showTransactions}},
+    {"quit", {"returns to authorization state", &MainActions::quit}}
 };
 
 std::shared_ptr<State> MainActions::getNextState()
@@ -41,18 +45,14 @@ bool MainActions::cashOut(Args& args)
     }
     
     ClientCard* card = dynamic_cast<ClientCard*>(&*ATM::getATM().getCurrentCard());
-    const int sum = std::stoi(args[0]);
     
-    if (card->getBalance() < sum)
+    const int sum = std::stoi(args[0]);
+    std::unordered_map<Banknote, int> res;
+    if (ATM::getATM().getSumAsBanknotes(sum, res))
     {
-        std::cout << "Not enough money on your balance\n";
-        return false;
-    }
-    if (ATM::getATM().cashOut(sum))
-    {
-        //todo rewrite using transactions
-        card->setBalance(card->getBalance() - sum);
-        std::cout << sum << " grivnas was successfully checked out\n";
+        Transactions::getInstance().makeTransaction(Transaction::TransactionType::CASH_OUT, std::make_shared<ClientCard>(*card), sum)->print(std::cout);
+        std::cout << '\n';
+        ATM::getATM().cashOut(sum);
         return false;
     }
     std::cout << "Sorry, ATM doesn't` have enough money to cash out the sum\n";
@@ -94,8 +94,7 @@ bool MainActions::cashIn(Args& args)
     }
     ATM::getATM().addMoney(banknote, numOfBanknotes);
     ClientCard* card = dynamic_cast<ClientCard*>(&*ATM::getATM().getCurrentCard());
-    card->setBalance(card->getBalance() + numOfBanknotes * banknote);
-    std::cout << "You cashed in " << numOfBanknotes * banknote << " grivnas\n";;
+    Transactions::getInstance().makeTransaction(Transaction::TransactionType::CASH_IN, std::make_shared<ClientCard>(*card), numOfBanknotes * banknote)->print(std::cout);
     return false;
 }
 
@@ -110,6 +109,9 @@ bool MainActions::changePassword(Args& args)
     if(utils::isPassword(args[0], newPassword))
     {
         std::cout << "Password was successfully changed\n";
+        ClientCard* cc = dynamic_cast<ClientCard*>(&*ATM::getATM().getCurrentCard());
+        cc->setPin(newPassword);
+        ClientCards::getInstance().modifyCardData(*cc);
         return false;
     }
     return false;
@@ -144,15 +146,7 @@ bool MainActions::transferMoneyToAnotherAccount(Args& args)
     {
         return false;        
     }
-    //todo check if this id exists
-    if(false)
-    {
-        std::cout << "No such user found. Operation canceled\n";
-        return false;
-    }
-    card->setBalance(card->getBalance() - amountOfMoney);
-    std::cout << "Successfully transferred " << amountOfMoney << " grivnas to user " << cardID << '\n';
-    //todo increase money of second user
+    Transactions::getInstance().makeTransaction(Transaction::TransactionType::CARD_TRANSFER, std::make_shared<ClientCard>(*card), amountOfMoney, cardID);
     return false;
 }
 
@@ -185,8 +179,22 @@ bool MainActions::transferMoneyToPhoneAccount(Args& args)
         std::cout << "Second argument has to be a phone number\n";
         return false;        
     }
-    card->setBalance(card->getBalance() - amountOfMoney);
-    std::cout << "Successfully transferred " << amountOfMoney << " grivnas to " << args[1] << '\n';
+    Transactions::getInstance().makeTransaction(Transaction::TransactionType::PHONE_TRANSFER, std::make_shared<ClientCard>(*card), amountOfMoney)->print(std::cout);
+    return false;
+}
+
+bool MainActions::showTransactions(Args& args)
+{
+    std::vector<Transaction> res;
+    Transactions::getInstance().findTransactionsByClientNumber(res, ATM::getATM().getCurrentCard()->getNumber());
+    for (const auto& transaction : res)
+    {
+        transaction.print(std::cout);
+    }
+    if(res.size() == 0)
+    {
+        std::cout << "There is no transactions yet\n";
+    }
     return false;
 }
 

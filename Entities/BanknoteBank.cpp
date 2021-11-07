@@ -39,11 +39,14 @@ void BanknoteBank::addBanknotes(const Banknote b, const int numToAdd)
     {
         _availableBanknotes.emplace(b, numToAdd);
     }
+    save();
 }
 
 void BanknoteBank::cashOut(const Banknote b, const int num)
 {
     _availableBanknotes.at(b) -= num;
+    utils::printBanknotes(b, num);
+    save();
 }
 
 void BanknoteBank::printAvailableBanknotes()

@@ -22,11 +22,4 @@ private:
 
 	// Transfer to authorize state
 	static bool quit(Args&);
-	
-	/* Functions managing bank settings and admin accounts */
-	static bool changeBanksName(Args&);
-	static bool addAdminAcc(Args&);
-	static bool editAdminAcc(Args&);
-	static bool deleteAdminAcc(Args&);
-	/* End of Functions managing admin accounts */
 };
