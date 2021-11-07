@@ -6,9 +6,9 @@
 State::State(CommandToDataMap& commandToDataMap): _commandToDataMap(commandToDataMap)
 {
 	commandToDataMap.insert({
-		"help",
-		{"shows all available commands and their descriptions", &State::help}
-	});
+        "help",
+        {"shows all available commands and their descriptions", &State::help}
+    });
 }
 
 
