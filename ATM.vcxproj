@@ -160,6 +160,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Cards.cpp" />
     <ClCompile Include="Entities\AdminCard.cpp" />
     <ClCompile Include="Entities\ATM.cpp" />
     <ClCompile Include="Entities\BanknoteBank.cpp" />

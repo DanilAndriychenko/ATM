@@ -12,9 +12,9 @@ public:
 
 	~Transactions() {}
 
-	const std::shared_ptr<Transaction> makeTransaction(Cards<ClientCard>& cards, Transaction::TransactionType type, const std::shared_ptr<ClientCard> sender, const int64_t sum, const int receiver = 111);
+	const std::shared_ptr<Transaction> makeTransaction(Transaction::TransactionType type, const std::shared_ptr<ClientCard> sender, const int64_t sum, const int receiver = 111);
 
-	const std::shared_ptr<Transaction> makeTransaction(Cards<ClientCard>& cards, const std::shared_ptr<ClientCard> sender, const int64_t sum, const std::string& phone_number);
+	const std::shared_ptr<Transaction> makeTransaction(const std::shared_ptr<ClientCard> sender, const int64_t sum, const std::string& phone_number);
 
 	void findTransactionsByClientNumber(std::vector<Transaction>& vec, const int numb);
 

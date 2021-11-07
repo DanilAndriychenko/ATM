@@ -44,8 +44,8 @@ public:
 		const int receiver_numb, const std::string& receiver_phone, const int64_t sum,
 		const int year, const int month, const int day, const int hours, const int mins, const int secs);
 
-	Transaction(Cards<ClientCard>& cards, TransactionType type, const std::shared_ptr<ClientCard> sender, const int64_t sum, const int reciever = 111);
-	Transaction(Cards<ClientCard>& cards, TransactionType type, const std::shared_ptr<ClientCard> sender, const int64_t sum, const std::string& ph_numb);
+	Transaction(TransactionType type, const std::shared_ptr<ClientCard> sender, const int64_t sum, const int reciever = 111);
+	Transaction(TransactionType type, const std::shared_ptr<ClientCard> sender, const int64_t sum, const std::string& ph_numb);
 	
 	~Transaction() {}
 	
@@ -81,7 +81,7 @@ private:
 	bool _isSuccessfull;
 	std::string _errorMsg;
 	bool checkBalance(int diff);
-	void initTransaction(Cards<ClientCard>&);
+	void initTransaction();
 	bool Serialize(rapidjson::Document&) const override;
 
 	int64_t hasher();

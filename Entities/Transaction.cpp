@@ -18,7 +18,7 @@ bool Transaction::checkBalance(int diff)
 	return (_type == Transaction::TransactionType::CASH_IN) || (_sender.get()->getBalance() - _sum - diff >= (_sender->getType() == ClientCard::CardType::DEBIT ? 0 : -(_sender->getCreditLimit())));
 }
 
-void Transaction::initTransaction(Cards<ClientCard>& cards)
+void Transaction::initTransaction()
 {
 	time_t theTime = time(NULL);
 	struct tm* aTime = localtime(&theTime);
@@ -49,6 +49,9 @@ void Transaction::initTransaction(Cards<ClientCard>& cards)
 		_errorMsg = "Insufficient funds for transfer";
 		return;
 	}
+
+	ClientCards& cards = ClientCards::getInstance();
+
 	if (_type == TransactionType::CARD_TRANSFER)
 	{
 		std::shared_ptr<ClientCard> reciev_ptr = cards.findCardByNumber(_receiver);
@@ -69,7 +72,7 @@ void Transaction::initTransaction(Cards<ClientCard>& cards)
 	cards.modifyCardData(*_sender);
 }
 
-Transaction::Transaction(Cards<ClientCard>& cards, TransactionType type, const std::shared_ptr<ClientCard> sender, const int64_t sum, const int reciever) :
+Transaction::Transaction(TransactionType type, const std::shared_ptr<ClientCard> sender, const int64_t sum, const int reciever) :
 	_type(type),
 	_sender(sender),
 	_receiver(reciever),
@@ -83,10 +86,10 @@ Transaction::Transaction(Cards<ClientCard>& cards, TransactionType type, const s
 	_sender_name(sender->getName()),
 	_id(0)
 {
-	initTransaction(cards);
+	initTransaction();
 }
 
-Transaction::Transaction(Cards<ClientCard>& cards, TransactionType type, const std::shared_ptr<ClientCard> sender, const int64_t sum, const std::string& ph_numb) :
+Transaction::Transaction(TransactionType type, const std::shared_ptr<ClientCard> sender, const int64_t sum, const std::string& ph_numb) :
 	_type(type),
 	_sender(sender),
 	_receiver(-1),
@@ -100,7 +103,7 @@ Transaction::Transaction(Cards<ClientCard>& cards, TransactionType type, const s
 	_sender_name(sender->getName()),
 	_id(0)
 {
-	initTransaction(cards);
+	initTransaction();
 }
 
 Transaction::Transaction(TransactionType type, bool success, const std::string& errorMsg, const int sender_numb, const std::string& sender_name,

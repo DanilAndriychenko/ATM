@@ -7,6 +7,7 @@
 #include <iostream>
 
 const std::string CLIENTS_DB_PATH("Resources/clients.json");
+const std::string ADMINS_DB_PATH("Resources/admins.json");
 const std::string TRANSACTIONS_PATH("Resources/transactions.json");
 const std::string BANKNOTE_BANK_PATH("Resources/banknotes.json");
 

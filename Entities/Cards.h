@@ -1,15 +1,78 @@
 #pragma once
-#include "JSONItem.h"
 #include <vector>
+#include "AdminCard.h"
+#include "ClientCard.h"
+
+class AbstractCards
+{
+public:
+	virtual ~AbstractCards() = 0;
+protected:
+	template<class T>
+	class Cards;
+};
+
+
+class ClientCards final : private AbstractCards
+{
+public:
+	static ClientCards& getInstance()
+	{
+		static ClientCards instance;
+		return instance;
+	}
+
+	~ClientCards() { delete _cards; }
+
+	const std::shared_ptr<ClientCard> findCardByNumber(const int numb);
+
+	void findAllCards(std::vector<ClientCard>&) const;
+
+	bool modifyCardData(const ClientCard& modified);
+
+	ClientCards(const ClientCards&) = delete;
+	void operator=(const ClientCards&) = delete;
+
+private:
+	ClientCards();
+	Cards<ClientCard>* _cards;
+};
+
+class AdminCards final : private AbstractCards
+{
+public:
+	static AdminCards& getInstance()
+	{
+		static AdminCards instance;
+		return instance;
+	}
+
+	~AdminCards() { delete _cards; }
+
+	const std::shared_ptr<AdminCard> findCardByNumber(const int numb);
+
+	void findAllCards(std::vector<AdminCard>&) const;
+
+	bool modifyCardData(const AdminCard& modified);
+
+	AdminCards(const AdminCards&) = delete;
+	void operator=(const AdminCards&) = delete;
+
+private:
+	AdminCards();
+	Cards<AdminCard>* _cards;
+};
+
+
 
 template <class T>
-class Cards
+class AbstractCards::Cards
 {
-	using deserializationFunct = const std::shared_ptr<T>(*)(const rapidjson::Value&);
+//	using deserializationFunct = const std::shared_ptr<T>(*)(const rapidjson::Value&);
 public:
-
-	Cards(const std::string& filePath, deserializationFunct funct);
 	
+	Cards(const std::string& filePath);
+
 	~Cards() {}
 
 	const std::shared_ptr<T> findCardByNumber(const int numb);
@@ -18,20 +81,19 @@ public:
 
 	bool modifyCardData(const T& modified);
 
-private:
-	
 	Cards(Cards const&) = delete;              // Don't Implement
 	void operator=(Cards const&) = delete; // Don't implement
 
+private:
+
 	rapidjson::Document _doc;
-//	void writeDocument() const;
 	std::string _filePath;
-	deserializationFunct _deserialize;
 };
+
 
 ////////class implementation////////
 template<class T>
-Cards<T>::Cards(const std::string& filePath, deserializationFunct funct) : _filePath(filePath), _deserialize(funct), _doc()
+AbstractCards::Cards<T>::Cards(const std::string& filePath) : _filePath(filePath), _doc()
 {
 	std::string buffer = utils::getStringBuffer(filePath);
 	InitDocument(buffer, _doc);
@@ -40,30 +102,30 @@ Cards<T>::Cards(const std::string& filePath, deserializationFunct funct) : _file
 }
 
 template <class T>
-void Cards<T>::findAllCards(std::vector<T>& vec) const
+void AbstractCards::Cards<T>::findAllCards(std::vector<T>& vec) const
 {
 	if (!vec.empty())
 		vec.clear();
 	for (rapidjson::Value::ConstValueIterator itr = _doc.Begin(); itr != _doc.End(); ++itr)
 	{
-		vec.push_back(*_deserialize(*itr));
+		vec.push_back(*T::Deserialize(*itr));
 		//vec.push_back(*(_deserialize(*itr).get()));
 	}
 }
 
 template <class T>
-const std::shared_ptr<T> Cards<T>::findCardByNumber(const int numb)
+const std::shared_ptr<T> AbstractCards::Cards<T>::findCardByNumber(const int numb)
 {
 	for (rapidjson::Value::ConstValueIterator itr = _doc.Begin(); itr != _doc.End(); ++itr)
 	{
 		if ((*itr)["number"].GetInt() == numb)
-			return _deserialize(*itr);
+			return T::Deserialize(*itr);
 	}
 	return std::shared_ptr<T>(nullptr);
 }
 
 template <class T>
-bool Cards<T>::modifyCardData(const T& modified)
+bool AbstractCards::Cards<T>::modifyCardData(const T& modified)
 {
 
 	for (int idx = 0; idx < (int)_doc.Size(); idx++)
@@ -81,19 +143,4 @@ bool Cards<T>::modifyCardData(const T& modified)
 	return false;
 }
 
-//template <class T>
-//void Cards<T>::writeDocument() const
-//{
-//	rapidjson::StringBuffer buffer;
-//
-//	buffer.Clear();
-//
-//	rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
-//	_doc.Accept(writer);
-//
-//	std::ofstream f(_filePath);
-//
-//	f << buffer.GetString();
-//	f.flush();
-//	f.close();
-//}
+
