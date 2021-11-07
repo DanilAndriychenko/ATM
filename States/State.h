@@ -26,10 +26,15 @@ public:
 
 	virtual std::shared_ptr<State> getNextState() = 0;
 	void printAllCommands() const;
+
+	
+
 private:
 	CommandToDataMap& _commandToDataMap;
 
 	static bool help(Args&);
+
+	std::pair<std::string, int> getCommandFromPrefix(const std::string&) const;
 };
 
 struct State::CommandData

@@ -1,6 +1,6 @@
 ﻿#include "State.h"
 #include "../Entities/ATM.h"
-
+#include <regex>
 #include <iostream>
 
 State::State(CommandToDataMap& commandToDataMap): _commandToDataMap(commandToDataMap)
@@ -11,19 +11,34 @@ State::State(CommandToDataMap& commandToDataMap): _commandToDataMap(commandToDat
 	});
 }
 
+
+std::pair<std::string, int> State::getCommandFromPrefix(const std::string& userComm) const
+{
+	int cnt = 0;
+	std::string command("");
+	for (const auto& p : _commandToDataMap)
+	{
+		if (userComm.length() > p.first.length())
+			continue;
+		auto res = std::mismatch(userComm.begin(), userComm.end(), (p.first).begin());
+		if (res.first == userComm.end())
+		{
+			cnt++;
+			command = p.first;
+		}
+	}
+	return std::make_pair(command, cnt);
+}
 bool State::executeCommandIfExists(ParsedInput& parsedInput) const
 {
-	/* For Rider users:
-	 * Inspections with the fixed severity level 'Error'.
-	 * These inspections detect compiler errors and there is no way to disable or configure them.
-	 * https://www.jetbrains.com/help/rider/Code_Analysis__Code_Inspections.html
-	 */
-	if (_commandToDataMap.contains(parsedInput.commandName))
-	{
-		return _commandToDataMap.at(parsedInput.commandName).commandPtr(parsedInput.args);
-	}
+	auto pir = getCommandFromPrefix(parsedInput.commandName);
 
-	std::cout << "Invalid command\n";
+	if(pir.second == 1)
+		return _commandToDataMap.at(pir.first).commandPtr(parsedInput.args);
+	if(pir.second > 1)
+		std::cout << "Incomplete command\n";
+	else
+		std::cout << "Invalid command\n";
 	return false;
 }
 
