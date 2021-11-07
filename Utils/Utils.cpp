@@ -30,11 +30,13 @@ bool utils::matchPhoneNumber(const std::string& str)
 
 void utils::printBanknotes(int nominal, int quant)
 {
+	if(quant <= 0)
+		return;
 	std::string filePath = "Resources/" + std::to_string(nominal) + ".txt";
 	std::ifstream f(filePath);
 	if (f.is_open())
 		std::cout << f.rdbuf();
-	std::cout << "X " << quant;
+	std::cout << "X " << quant << '\n';
 }
 
 unsigned utils::hashStr(const char* s)

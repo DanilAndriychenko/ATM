@@ -21,7 +21,7 @@ std::string ClientCard::setCreditLimit(const int64_t limit)
     {
         return "Cannot set credit limit for debit card";
     }
-    if (limit <= maxCreditLimit)
+    if (limit > maxCreditLimit)
     {
         return "The value is too high. Max credit limit is " + std::to_string(maxCreditLimit);
     }

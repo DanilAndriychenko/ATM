@@ -50,6 +50,11 @@ bool Authorization::authorize(Args& arguments)
                 std::cout << "Incorrect password\n";
                 return false;
             }
+            if(card->isExpired())
+            {
+                std::cout << "Sorry your card is expired\n";
+                return false;
+            }
             ATM::getATM().setCurrentCard(card);
             std::cout << "Welcome " << card->getName() << "!\n";
             return true;
