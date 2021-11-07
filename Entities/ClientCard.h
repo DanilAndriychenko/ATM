@@ -21,7 +21,7 @@ public:
 	const std::pair<int, int>& getExpiryDate() const { return _expiryDate; }
 	void setBalance(const int64_t balance) { _balance = balance; }
 	void setName(const std::string& name) { _name = name; }
-	bool setCreditLimit(const int64_t limit);
+	std::string setCreditLimit(const int64_t limit);
 	bool isExpired() const;
 	CardType getType() const { return _type; }
 

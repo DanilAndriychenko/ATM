@@ -30,13 +30,12 @@ public:
 	int getTotal() const;
 	void printBanknotesNumber(const Banknote) const;
 	void printBanknotesNumber() const;
+	bool getSumAsBanknotes(int sum, std::unordered_map<Banknote, int>&);
 
 
 private:
 	ATM();
 	~ATM() {}
-
-	bool getSumAsBanknotes(int sum, std::unordered_map<Banknote, int>&);
 
 	const ATM& operator=(const ATM&) = delete;
 	ATM(const ATM&) = delete;

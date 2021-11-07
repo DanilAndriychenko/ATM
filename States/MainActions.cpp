@@ -9,13 +9,14 @@
 
 MainActions::CommandToDataMap MainActions::_commandsForThisState
 {
-    {"showbalance", {"empty description", &MainActions::showBalance}},
-    {"cashout", {"empty description", &MainActions::cashOut}},
-    {"cashin", {"empty description", &MainActions::cashIn}},
+    {"showbalance", {"prints user`s balance", &MainActions::showBalance}},
+    {"cashout", {"cashes out sum of money", &MainActions::cashOut}},
+    {"cashin", {"cashes in certain number of banknotes", &MainActions::cashIn}},
     {"changepassword", {"empty description", &MainActions::changePassword}},
     {"transfermoneytoanotheraccount", {"empty description", &MainActions::transferMoneyToAnotherAccount}},
     {"transfermoneytophoneaccount", {"transfers money to account of other bank user", &MainActions::transferMoneyToPhoneAccount}},
     {"showtransactions", {"prints the list of all user transactions", &MainActions::showTransactions}},
+    {"changecreditlimit", {"if card is credit changes credit limit", &MainActions::changeCreditLimit}},
     {"quit", {"returns to authorization state", &MainActions::quit}}
 };
 
@@ -50,7 +51,7 @@ bool MainActions::cashOut(Args& args)
     std::unordered_map<Banknote, int> res;
     if (ATM::getATM().getSumAsBanknotes(sum, res))
     {
-        Transactions::getInstance().makeTransaction(Transaction::TransactionType::CASH_OUT, std::make_shared<ClientCard>(*card), sum)->print(std::cout);
+        Transactions::getInstance().makeTransaction(Transaction::TransactionType::CASH_OUT, card, sum)->print(std::cout);
         std::cout << '\n';
         ATM::getATM().cashOut(sum);
         return false;
@@ -94,7 +95,7 @@ bool MainActions::cashIn(Args& args)
     }
     ATM::getATM().addMoney(banknote, numOfBanknotes);
     ClientCard* card = dynamic_cast<ClientCard*>(&*ATM::getATM().getCurrentCard());
-    Transactions::getInstance().makeTransaction(Transaction::TransactionType::CASH_IN, std::make_shared<ClientCard>(*card), numOfBanknotes * banknote)->print(std::cout);
+    Transactions::getInstance().makeTransaction(Transaction::TransactionType::CASH_IN,card, numOfBanknotes * banknote)->print(std::cout);
     return false;
 }
 
@@ -146,7 +147,7 @@ bool MainActions::transferMoneyToAnotherAccount(Args& args)
     {
         return false;        
     }
-    Transactions::getInstance().makeTransaction(Transaction::TransactionType::CARD_TRANSFER, std::make_shared<ClientCard>(*card), amountOfMoney, cardID);
+    Transactions::getInstance().makeTransaction(Transaction::TransactionType::CARD_TRANSFER, card, amountOfMoney, cardID);
     return false;
 }
 
@@ -179,7 +180,7 @@ bool MainActions::transferMoneyToPhoneAccount(Args& args)
         std::cout << "Second argument has to be a phone number\n";
         return false;        
     }
-    Transactions::getInstance().makeTransaction(Transaction::TransactionType::PHONE_TRANSFER, std::make_shared<ClientCard>(*card), amountOfMoney)->print(std::cout);
+    Transactions::getInstance().makeTransaction(Transaction::TransactionType::PHONE_TRANSFER, card, amountOfMoney)->print(std::cout);
     return false;
 }
 
@@ -195,6 +196,29 @@ bool MainActions::showTransactions(Args& args)
     {
         std::cout << "There is no transactions yet\n";
     }
+    return false;
+}
+
+bool MainActions::changeCreditLimit(Args& args)
+{
+    if(args.size() != 1)
+    {
+        std::cout << "changeCreditLimit function takes 1 arguments: new credit limit\n";
+        return false;
+    }
+    if(!utils::isInt(args[0]))
+    {        
+        std::cout << "First argument is  new credit limit. It must be integer value\n";
+        return false;
+    }
+    const int limit = std::stoi(args[0]);
+    if(limit <= 0)
+    {
+        std::cout << "Credit limit has to be positive\n";
+        return false;
+    }
+    ClientCard* cc = dynamic_cast<ClientCard*>(&*ATM::getATM().getCurrentCard());
+    std::cout << cc->setCreditLimit(limit) << '\n';
     return false;
 }
 

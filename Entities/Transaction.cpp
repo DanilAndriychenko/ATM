@@ -15,7 +15,7 @@ int64_t Transaction::hasher()
 
 bool Transaction::checkBalance(int diff)
 {
-	return (_type == Transaction::TransactionType::CASH_IN) || (_sender->getBalance() - _sum - diff >= (_sender->getType() == ClientCard::CardType::DEBIT ? 0 : -(_sender->getCreditLimit())));
+	return (_type == TransactionType::CASH_IN) || (_sender->getBalance() - _sum - diff >= (_sender->getType() == ClientCard::CardType::DEBIT ? 0 : -(_sender->getCreditLimit())));
 }
 
 void Transaction::initTransaction()

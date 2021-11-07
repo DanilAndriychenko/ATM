@@ -23,4 +23,5 @@ private:
     static bool transferMoneyToAnotherAccount(Args&);
     static bool transferMoneyToPhoneAccount(Args&);
     static bool showTransactions(Args&);
+    static bool changeCreditLimit(Args&);
 };
