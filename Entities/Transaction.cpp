@@ -38,8 +38,10 @@ void Transaction::initTransaction()
 
 	if (bankID == _sender->getNumber() % 1000 || _type == TransactionType::CHARITY_TRANSFER)
 		_currentComission = 0.0;
+	else
+		_currentComission = commision;
 	if (_type == TransactionType::PHONE_TRANSFER)
-		_currentComission = commision + 0.01;
+		_currentComission += 0.01;
 	//consider rounding
 	int diff = round(_sum * _currentComission);
 	

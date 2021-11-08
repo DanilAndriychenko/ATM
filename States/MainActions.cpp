@@ -194,7 +194,7 @@ bool MainActions::transferMoneyToPhoneAccount(Args& args)
         std::cout << "Second argument has to be a phone number\n";
         return false;
     }
-    Transactions::getInstance().makeTransaction(Transaction::TransactionType::PHONE_TRANSFER, card, amountOfMoney)->
+    Transactions::getInstance().makeTransaction(card, amountOfMoney, args[1])->
                                 print(std::cout);
     return false;
 }
