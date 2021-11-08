@@ -27,7 +27,7 @@ public:
 	void cashOut(const Banknote, const int numberOfBanknotes);
 	bool cashOut(const int sum);
 	void addMoney(const Banknote, const int);
-	int getTotal() const;
+	long getTotal() const;
 	void printBanknotesNumber(const Banknote) const;
 	void printBanknotesNumber() const;
 	bool getSumAsBanknotes(int sum, std::unordered_map<Banknote, int>&);

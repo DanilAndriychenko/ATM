@@ -12,12 +12,12 @@ BanknoteBank::BanknoteBank(const std::string& filePath) : _availableBanknotes(),
     }
 }
 
-int BanknoteBank::getTotal() const
+long BanknoteBank::getTotal() const
 {
-    int total = 0;
+    long total = 0;
     for (const auto& bToNum : _availableBanknotes)
     {
-        total += bToNum.second;
+        total += bToNum.first * bToNum.second;
     }
     return total;
 }
@@ -63,7 +63,7 @@ void BanknoteBank::printBanknotesNum() const
     std::cout << "There are: \n";
     for (const auto& bToNum : _availableBanknotes)
     {
-        std::cout << "\t" << bToNum.second << " banknotes of " << bToNum.second << "grivnas value\n";
+        std::cout << "\t" << bToNum.second << " banknotes of " << bToNum.first << "grivnas value\n";
     }
 }
 

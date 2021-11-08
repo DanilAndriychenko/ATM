@@ -6,9 +6,10 @@
 
 Maintenance::CommandToDataMap Maintenance::_commandToDataMap
 {
-    {"showBalance", {"prints total sum available in ATM", &Maintenance::showBalance}},
-    {"addBanknotes", {"Adds banknotes to ATM", &Maintenance::addBanknotes}},
-    {"cashOutBanknotes", {"Cashes out banknotes from ATM", &Maintenance::cashOutBanknotes}},
+    {"showbalance", {"prints total sum available in ATM", &Maintenance::showBalance}},
+    {"addbanknotes", {"Adds banknotes to ATM", &Maintenance::addBanknotes}},
+    {"cashoutbanknotes", {"Cashes out banknotes from ATM", &Maintenance::cashOutBanknotes}},
+    {"showbanknotesnum", {"Displays number of banknotes for each available banknote", &Maintenance::showBanknotesNum}},
     {"quit", {"Returns to authentication state", &Maintenance::quit}},
 };
 
@@ -82,4 +83,10 @@ bool Maintenance::cashOutBanknotes(Args& args)
     return false;
 }
 
-bool Maintenance::quit(Args&) { return false; }
+bool Maintenance::showBanknotesNum(Args&)
+{
+    ATM::getATM().printBanknotesNumber();
+    return false;
+}
+
+bool Maintenance::quit(Args&) { return true; }

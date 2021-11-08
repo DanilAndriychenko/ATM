@@ -13,10 +13,15 @@ ATM& ATM::getATM()
 
 void ATM::listenCommands()
 {
+    static const std::string endCommand("end");
     std::string input;
     while (true)
     {
         std::getline(std::cin, input);
+        if (input == endCommand)
+        {
+            break;
+        }
         if (input.empty())
         {
             std::cout << "Invalid command\n";
@@ -55,7 +60,7 @@ void ATM::cashOut(const Banknote b, const int numberOfBanknotes)
     }
 }
 
-int ATM::getTotal() const
+long ATM::getTotal() const
 {
     return _availableBanknotes.getTotal();
 }
@@ -115,7 +120,7 @@ bool ATM::getSumAsBanknotes(int sum, std::unordered_map<Banknote, int>& sumInBan
 bool ATM::cashOut(int sum)
 {
     std::unordered_map<Banknote, int> sumInBanknotes;
-    if(getSumAsBanknotes(sum, sumInBanknotes))
+    if (getSumAsBanknotes(sum, sumInBanknotes))
     {
         for (auto& bToNum : sumInBanknotes)
         {

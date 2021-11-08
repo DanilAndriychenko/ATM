@@ -14,14 +14,14 @@ MainActions::CommandToDataMap MainActions::_commandsForThisState
     {"cashin", {"cashes in certain number of banknotes", &MainActions::cashIn}},
     {"changepassword", {"empty description", &MainActions::changePassword}},
     {"transfermoneytoanotheraccount", {"empty description", &MainActions::transferMoneyToAnotherAccount}},
-    {"transferMoneyToCharity", {"transfers money to charity", &MainActions::transferMoneyToCharity}},
+    {"transfermoneytocharity", {"transfers money to charity", &MainActions::transferMoneyToCharity}},
     {
         "transfermoneytophoneaccount",
         {"transfers money to account of other bank user", &MainActions::transferMoneyToPhoneAccount}
     },
     {"showtransactions", {"prints the list of all user transactions", &MainActions::showTransactions}},
     {"changecreditlimit", {"if card is credit changes credit limit", &MainActions::changeCreditLimit}},
-    {"showCreditLimit", {"if card is credit displays credit limit", &MainActions::showCreditLimit}},
+    {"showcreditlimit", {"if card is credit displays credit limit", &MainActions::showCreditLimit}},
     {"quit", {"returns to authorization state", &MainActions::quit}}
 };
 
@@ -231,11 +231,21 @@ bool MainActions::transferMoneyToCharity(Args& args)
 
 bool MainActions::showTransactions(Args& args)
 {
+    int numOfTransactionsToDisplay = 0;
+    if (args.size() == 1 && utils::isInt(args[0]))
+    {
+        numOfTransactionsToDisplay = std::stoi(args[0]) + 1;
+    }
+
     std::vector<Transaction> res;
     Transactions::getInstance().findTransactionsByClientNumber(res, ATM::getATM().getCurrentCard()->getNumber());
-    for (const auto& transaction : res)
+    if(numOfTransactionsToDisplay <= 0 || numOfTransactionsToDisplay > res.size())
     {
-        transaction.print(std::cout);
+        numOfTransactionsToDisplay = res.size();
+    }
+    for (int i = res.size() - 1; i > res.size() - numOfTransactionsToDisplay; i--)
+    {
+        res[i].print(std::cout);
     }
     if (res.size() == 0)
     {

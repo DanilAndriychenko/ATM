@@ -18,7 +18,7 @@ public:
     ~BanknoteBank() { save(); }
 
     int getNumOfBanknotes(const Banknote) const;
-    int getTotal() const;
+    long getTotal() const;
     void printBanknotesNum() const;
     void addBanknotes(const Banknote, const int);
     void cashOut(const Banknote, const int);
