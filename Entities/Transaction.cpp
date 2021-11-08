@@ -60,7 +60,13 @@ void Transaction::initTransaction()
 		if (reciev_ptr.get() == nullptr)
 		{
 			_isSuccessfull = false;
-			_errorMsg = "Reciever doesn`t exist";
+			_errorMsg = "Receiver doesn`t exist";
+			return;
+		}
+		if (reciev_ptr->isExpired())
+		{
+			_isSuccessfull = false;
+			_errorMsg = "Receiver card is expired";
 			return;
 		}
 		reciev_ptr->setBalance(reciev_ptr->getBalance() + _sum);

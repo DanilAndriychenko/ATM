@@ -154,13 +154,16 @@ bool MainActions::transferMoneyToAnotherAccount(Args& args)
         std::cout << "Not enough money on your balance\n";
         return false;
     }
-    int cardID = 0;
-    if (!utils::isID(args[1], cardID))
+    int cardid = 0;
+    /*if (!utils::isID(args[1], cardid))
     {
         return false;
-    }
-    Transactions::getInstance().makeTransaction(Transaction::TransactionType::CARD_TRANSFER, card, amountOfMoney,
-                                                cardID);
+    }*/
+    if (!utils::isInt(args[1]))
+        std::cout << "Card number must contain only digits!\n";
+    else
+        Transactions::getInstance().makeTransaction(Transaction::TransactionType::CARD_TRANSFER, card, amountOfMoney,
+                                                  cardid)->print(std::cout);
     return false;
 }
 
@@ -169,7 +172,7 @@ bool MainActions::transferMoneyToPhoneAccount(Args& args)
     if (args.size() != 2)
     {
         std::cout <<
-            "transferMoneyToAnotherAccount function takes 2 arguments: amount of money you want to transfer and phone number\n";
+            "transferMoneyToPhoneAccount function takes 2 arguments: amount of money you want to transfer and phone number\n";
         return false;
     }
     if (!utils::isInt(args[0]))
@@ -234,22 +237,27 @@ bool MainActions::showTransactions(Args& args)
     int numOfTransactionsToDisplay = 0;
     if (args.size() == 1 && utils::isInt(args[0]))
     {
-        numOfTransactionsToDisplay = std::stoi(args[0]) + 1;
+        numOfTransactionsToDisplay = std::stoi(args[0]);
     }
 
     std::vector<Transaction> res;
     Transactions::getInstance().findTransactionsByClientNumber(res, ATM::getATM().getCurrentCard()->getNumber());
-    if(numOfTransactionsToDisplay <= 0 || numOfTransactionsToDisplay > res.size())
+    if(numOfTransactionsToDisplay <= 0 || numOfTransactionsToDisplay >= res.size())
     {
         numOfTransactionsToDisplay = res.size();
-    }
-    for (int i = res.size() - 1; i > res.size() - numOfTransactionsToDisplay; i--)
-    {
-        res[i].print(std::cout);
     }
     if (res.size() == 0)
     {
         std::cout << "There is no transactions yet\n";
+        return false;
+    }
+    /*for (int i = res.size() - 1; i > res.size() - numOfTransactionsToDisplay; i--)
+    {
+        res[i].print(std::cout);
+    }*/
+    for (int i = 0; i < numOfTransactionsToDisplay; ++i)
+    {
+        res[res.size() - 1 - i].print(std::cout);
     }
     return false;
 }
@@ -262,7 +270,7 @@ bool MainActions::showCreditLimit(Args&)
         std::cout << cc->getCreditLimit() << '\n';
         return false;
     }
-    std::cout << "Debit cards don` have credit limit\n";
+    std::cout << "Debit cards don`t have credit limit\n";
     return false;
 }
 

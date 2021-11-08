@@ -70,6 +70,7 @@ bool Authorization::authorize(Args& arguments)
             std::cout << "Authorized with exclusive rights\n";
             return true;            
         }
+        std::cout << "Card with such number doesn`t exist\n";
     }
     return false;
 }
