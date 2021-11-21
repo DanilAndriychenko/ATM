@@ -8,7 +8,7 @@
 using std::string;
 using std::cout;
 
-#define NDEBUG
+//#define NDEBUG
 
 // Main is the function that called every time when ATM powered on
 int main()

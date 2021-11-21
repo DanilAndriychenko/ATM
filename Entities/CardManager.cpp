@@ -4,7 +4,7 @@ AbstractCardManager::~AbstractCardManager() {}
 
 ClientCardManager::ClientCardManager() : _cards(new TemplateCardManager<ClientCard>(CLIENTS_DB_PATH)) {}
 
-AdminCardManager::AdminCardManager() : _cards(new AbstractCardManager::TemplateCardManager<AdminCard>(ADMINS_DB_PATH)) {}
+AdminCardManager::AdminCardManager() : _cards(new TemplateCardManager<AdminCard>(ADMINS_DB_PATH)) {}
 
 ClientCardManager::~ClientCardManager()
 {
