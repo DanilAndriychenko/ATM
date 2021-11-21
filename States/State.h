@@ -22,7 +22,7 @@ public:
 	explicit State(CommandToDataMap& commandToDataMap);
 	State(const State& other) = delete;
 	State& operator=(const State& other) = delete;
-	virtual ~State() {};
+	virtual ~State() {}
 
 	bool executeCommandIfExists(ParsedInput& parsedInput) const;
 

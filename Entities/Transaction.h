@@ -7,6 +7,7 @@ class Transaction final : public JSONItem
 {
 public:
 
+	friend class Tester;
 	enum class TransactionType
 	{
 		CARD_TRANSFER = 0,

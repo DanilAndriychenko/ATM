@@ -67,20 +67,36 @@ bool Maintenance::cashOutBanknotes(Args& args)
 {
     if (args.size() != 2)
     {
-        std::cout << "cashOutBanknotes function takes two argument\n";
+        std::cout << "cashOutBanknotes takes two arguments: banknote and number of banknotes\n";
         return false;
     }
     if (!utils::isInt(args[0]))
     {
-        std::cout << "cashOutBanknotes takes number as first argument\n";
+        std::cout << "First argument is banknote value\nAvailable banknotes are: \n";
+        BanknoteBank::printAvailableBanknotes();
         return false;
     }
-    const int sum = std::stoi(args[0]);
-    if (ATM::getATM().cashOut(sum))
+    if (!utils::isInt(args[1]))
     {
+        std::cout << "Second argument is number of banknotes you want to cash out. Please enter integer value\n";
+        BanknoteBank::printAvailableBanknotes();
         return false;
     }
-    std::cout << "Sorry, ATM doesn't have enough banknotes\n";
+    const Banknote banknote = std::stoi(args[0]);
+    if (!BanknoteBank::banknoteExists(banknote))
+    {
+        std::cout << "There is no such a banknote " << banknote << '\n';
+        std::cout << "Please enter one of existing ones\n";
+        BanknoteBank::printAvailableBanknotes();
+        return false;
+    }
+    const int numOfBanknotes = std::stoi(args[1]);
+    if (numOfBanknotes <= 0)
+    {
+        std::cout << "Second argument cannot be below zero. This is the number of banknotes you want to cash out\n";
+        return false;
+    }
+    ATM::getATM().cashOut(banknote, numOfBanknotes);
     return false;
 }
 

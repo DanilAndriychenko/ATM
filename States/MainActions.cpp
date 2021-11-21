@@ -104,7 +104,7 @@ bool MainActions::cashIn(Args& args)
         return false;
     }
     ATM::getATM().addMoney(banknote, numOfBanknotes);
-    ClientCard* card = dynamic_cast<ClientCard*>(&*ATM::getATM().getCurrentCard());
+    ClientCard* card = &*ATM::getATM().getCurrentCard();
     TransactionManager::getInstance().makeTransaction(Transaction::TransactionType::CASH_IN, card, numOfBanknotes * banknote)
                                ->print(std::cout);
     return false;
