@@ -32,7 +32,7 @@ std::shared_ptr<State> MainActions::getNextState()
 
 bool MainActions::showBalance(Args&)
 {
-    ClientCard* card = dynamic_cast<ClientCard*>(&*ATM::getATM().getCurrentCard());
+    ClientCard* card = &*ATM::getATM().getCurrentCard();
     std::cout << "Your balance is : " << card->getBalance() << '\n';
     return false;
 }
@@ -50,7 +50,7 @@ bool MainActions::cashOut(Args& args)
         return false;
     }
 
-    ClientCard* card = dynamic_cast<ClientCard*>(&*ATM::getATM().getCurrentCard());
+    ClientCard* card = &*ATM::getATM().getCurrentCard();
 
     const int sum = std::stoi(args[0]);
     std::unordered_map<Banknote, int> res;
@@ -121,7 +121,7 @@ bool MainActions::changePassword(Args& args)
     if (utils::isPassword(args[0], newPassword))
     {
         std::cout << "Password was successfully changed\n";
-        ClientCard* cc = dynamic_cast<ClientCard*>(&*ATM::getATM().getCurrentCard());
+        ClientCard* cc = &*ATM::getATM().getCurrentCard();
         cc->setPin(newPassword);
         ClientCardManager::getInstance().modifyCardData(*cc);
         return false;
@@ -148,7 +148,7 @@ bool MainActions::transferMoneyToAnotherAccount(Args& args)
         std::cout << "Amount of money you want to transfer has to be positive\n";
         return false;
     }
-    ClientCard* card = dynamic_cast<ClientCard*>(&*ATM::getATM().getCurrentCard());
+    ClientCard* card = &*ATM::getATM().getCurrentCard();
     if (card->getBalance() < amountOfMoney)
     {
         std::cout << "Not enough money on your balance\n";
@@ -183,7 +183,7 @@ bool MainActions::transferMoneyToPhoneAccount(Args& args)
         std::cout << "Amount of money you want to transfer has to be positive\n";
         return false;
     }
-    ClientCard* card = dynamic_cast<ClientCard*>(&*ATM::getATM().getCurrentCard());
+    ClientCard* card = &*ATM::getATM().getCurrentCard();
     if (card->getBalance() < amountOfMoney)
     {
         std::cout << "Not enough money on your balance\n";
@@ -218,7 +218,7 @@ bool MainActions::transferMoneyToCharity(Args& args)
         std::cout << "Amount of money you want to transfer has to be positive\n";
         return false;
     }
-    ClientCard* card = dynamic_cast<ClientCard*>(&*ATM::getATM().getCurrentCard());
+    ClientCard* card = &*ATM::getATM().getCurrentCard();
     if (card->getBalance() < amountOfMoney)
     {
         std::cout << "Not enough money on your balance\n";
@@ -256,7 +256,7 @@ bool MainActions::showTransactions(Args& args)
 
 bool MainActions::showCreditLimit(Args&)
 {
-    ClientCard* cc = dynamic_cast<ClientCard*>(&*ATM::getATM().getCurrentCard());
+    ClientCard* cc = &*ATM::getATM().getCurrentCard();
     if (cc->getType() == ClientCard::CardType::CREDIT)
     {
         std::cout << cc->getCreditLimit() << '\n';
@@ -284,7 +284,7 @@ bool MainActions::changeCreditLimit(Args& args)
         std::cout << "Credit limit has to be positive\n";
         return false;
     }
-    ClientCard* cc = dynamic_cast<ClientCard*>(&*ATM::getATM().getCurrentCard());
+    ClientCard* cc = &*ATM::getATM().getCurrentCard();
     std::cout << cc->setCreditLimit(limit) << '\n';
     return false;
 }
