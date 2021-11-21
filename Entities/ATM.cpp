@@ -13,15 +13,12 @@ ATM& ATM::getATM()
 
 void ATM::listenCommands()
 {
-    static const std::string endCommand("end");
+    std::cout << "ATM is turned on and ready to process your commands. \nTo get the list of all commands enter \"help\" command\n";
+    std::cout << "Shortened commands are allowed\n\n";
     std::string input;
-    while (true)
+    while (bIsActive)
     {
         std::getline(std::cin, input);
-        if (input == endCommand)
-        {
-            break;
-        }
         if (input.empty())
         {
             std::cout << "Invalid command\n";
@@ -89,7 +86,7 @@ void ATM::addMoney(const int banknote, const int numberOfBanknotes)
 }
 
 ATM::ATM(): _currentCard(nullptr), _currentState{std::make_shared<Authorization>()},
-            _availableBanknotes(BanknoteBank::getInstance())
+            _availableBanknotes(BanknoteBank::getInstance()), bIsActive(true)
 {
 }
 

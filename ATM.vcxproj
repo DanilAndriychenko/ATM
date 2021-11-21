@@ -298,6 +298,7 @@
 		<ClInclude Include="Utils\Utils.h" />
 	</ItemGroup>
 	<ItemGroup>
+		<Content Include="Resources\admins.json" />
 		<Content Include="Resources\banknotes.json" />
 		<Content Include="Resources\clients.json" />
 		<Content Include="Resources\transactions.json" />

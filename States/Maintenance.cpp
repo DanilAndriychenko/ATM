@@ -11,6 +11,7 @@ Maintenance::CommandToDataMap Maintenance::_commandToDataMap
     {"cashoutbanknotes", {"Cashes out banknotes from ATM", &Maintenance::cashOutBanknotes}},
     {"showbanknotesnum", {"Displays number of banknotes for each available banknote", &Maintenance::showBanknotesNum}},
     {"quit", {"Returns to authentication state", &Maintenance::quit}},
+    {"turnoff", {"Terminates the work of ATM", &Maintenance::quit}},
 };
 
 std::shared_ptr<State> Maintenance::getNextState()
@@ -86,6 +87,12 @@ bool Maintenance::cashOutBanknotes(Args& args)
 bool Maintenance::showBanknotesNum(Args&)
 {
     ATM::getATM().printBanknotesNumber();
+    return false;
+}
+
+bool Maintenance::turnOffATM(Args&)
+{
+    ATM::getATM().turnOff();
     return false;
 }
 

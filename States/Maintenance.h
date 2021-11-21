@@ -19,6 +19,7 @@ private:
 	static bool addBanknotes(Args&);
 	static bool cashOutBanknotes(Args&);
 	static bool showBanknotesNum(Args&);
+	static bool turnOffATM(Args&);
 	/* End of Functions managing money in ATM */
 
 	// Transfer to authorize state

@@ -4,6 +4,7 @@
 
 #include "BanknoteBank.h"
 #include "Card.h"
+#include "ClientCard.h"
 #include "./../Utils/Utils.h"
 #include "./../States/State.h"
 
@@ -19,8 +20,8 @@ public:
 	void listenCommands();
 	void executeCommandIfExists(ParsedInput& parsedCommand);
 
-	void setCurrentCard(const std::shared_ptr<Card> с) { _currentCard = с; }
-	std::shared_ptr<Card> getCurrentCard() { return _currentCard; }
+	void setCurrentCard(const std::shared_ptr<ClientCard> с) { _currentCard = с; }
+	std::shared_ptr<ClientCard> getCurrentCard() { return _currentCard; }
 
 	std::shared_ptr<State> getCurrentState() const { return _currentState; }
 
@@ -31,6 +32,7 @@ public:
 	void printBanknotesNumber(const Banknote) const;
 	void printBanknotesNumber() const;
 	bool getSumAsBanknotes(int sum, std::unordered_map<Banknote, int>&);
+	void turnOff() {bIsActive = false;}
 
 
 private:
@@ -40,7 +42,9 @@ private:
 	const ATM& operator=(const ATM&) = delete;
 	ATM(const ATM&) = delete;
 
-	std::shared_ptr<Card> _currentCard;
+	std::shared_ptr<ClientCard> _currentCard;
 	class std::shared_ptr<State> _currentState;
 	BanknoteBank& _availableBanknotes;
+
+	bool bIsActive;
 };
