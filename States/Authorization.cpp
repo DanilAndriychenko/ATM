@@ -1,7 +1,7 @@
 ﻿#include "Authorization.h"
 #include "Maintenance.h"
 #include "../Entities/ATM.h"
-#include "../Entities/Cards.h"
+#include "../Entities/CardManager.h"
 
 #include <iostream>
 
@@ -26,11 +26,11 @@ std::shared_ptr<State> Authorization::getNextState()
 #ifdef NDEBUG
     std::cout << "movingToNextState\n";
 #endif
-    if (ATM::getATM().getCurrentCard()->isAdmin())
+    if (ATM::getATM().getCurrentCard())
     {
-        return std::make_shared<Maintenance>();
+        return std::make_shared<MainActions>();
     }
-    return std::make_shared<MainActions>();
+    return std::make_shared<Maintenance>();
 }
 
 bool Authorization::authorize(Args& arguments)
@@ -43,14 +43,14 @@ bool Authorization::authorize(Args& arguments)
     int id, password;
     if (utils::isID(arguments[0], id) && utils::isPassword(arguments[1], password))
     {
-        if (const std::shared_ptr<ClientCard> card = ClientCards::getInstance().findCardByNumber(id))
+        if (const std::shared_ptr<ClientCard> card = ClientCardManager::getInstance().findCardByNumber(id))
         {
-            if(card->getPin() != password)
+            if (card->getPin() != password)
             {
                 std::cout << "Incorrect password\n";
                 return false;
             }
-            if(card->isExpired())
+            if (card->isExpired())
             {
                 std::cout << "Sorry your card is expired\n";
                 return false;
@@ -59,17 +59,17 @@ bool Authorization::authorize(Args& arguments)
             std::cout << "Welcome " << card->getName() << "!\n";
             return true;
         }
-        if (const std::shared_ptr<AdminCard> card = AdminCards::getInstance().findCardByNumber(id))
+        if (const std::shared_ptr<AdminCard> card = AdminCardManager::getInstance().findCardByNumber(id))
         {
-            if(card->getPin() != password)
+            if (card->getPin() != password)
             {
                 std::cout << "Incorrect password\n";
                 return false;
             }
-            ATM::getATM().setCurrentCard(card);
             std::cout << "Authorized with exclusive rights\n";
-            return true;            
+            return true;
         }
+        std::cout << "No such card\n";
     }
     return false;
 }

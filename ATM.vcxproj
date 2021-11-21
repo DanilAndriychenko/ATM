@@ -163,7 +163,7 @@
 		<ClCompile Include="Entities\AdminCard.cpp" />
 		<ClCompile Include="Entities\ATM.cpp" />
 		<ClCompile Include="Entities\BanknoteBank.cpp" />
-		<ClCompile Include="Entities\Cards.cpp">
+		<ClCompile Include="Entities\CardManager.cpp">
 			<RuntimeLibrary>MultiThreadedDebugDll</RuntimeLibrary>
 			<BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
 			<Optimization>Disabled</Optimization>
@@ -235,7 +235,7 @@
 		<ClCompile Include="Entities\JSONItem.cpp" />
 		<ClCompile Include="Entities\ClientCard.cpp" />
 		<ClCompile Include="Entities\Transaction.cpp" />
-		<ClCompile Include="Entities\Transactions.cpp" />
+		<ClCompile Include="Entities\TransactionManager.cpp" />
 		<ClCompile Include="main.cpp" />
 		<ClCompile Include="States\Authorization.cpp" />
 		<ClCompile Include="States\MainActions.cpp" />
@@ -250,9 +250,9 @@
 		<ClInclude Include="Entities\BanknoteBank.h" />
 		<ClInclude Include="Entities\JSONItem.h" />
 		<ClInclude Include="Entities\ClientCard.h" />
-		<ClInclude Include="Entities\Cards.h" />
+		<ClInclude Include="Entities\CardManager.h" />
 		<ClInclude Include="Entities\Transaction.h" />
-		<ClInclude Include="Entities\Transactions.h" />
+		<ClInclude Include="Entities\TransactionManager.h" />
 		<ClInclude Include="rapidjson\allocators.h" />
 		<ClInclude Include="rapidjson\cursorstreamwrapper.h" />
 		<ClInclude Include="rapidjson\document.h" />
