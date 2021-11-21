@@ -52,7 +52,7 @@ void Transaction::initTransaction()
 		return;
 	}
 
-	ClientCards& cards = ClientCards::getInstance();
+	ClientCardManager& cards = ClientCardManager::getInstance();
 
 	if (_type == TransactionType::CARD_TRANSFER)
 	{

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ClientCard.h"
-#include "Cards.h"
+#include "CardManager.h"
 
 class Transaction final : public JSONItem
 {

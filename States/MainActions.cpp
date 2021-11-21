@@ -4,7 +4,7 @@
 
 #include "Authorization.h"
 #include "../Entities/ATM.h"
-#include "../Entities/Transactions.h"
+#include "../Entities/TransactionManager.h"
 #include "../Entities/ClientCard.h"
 
 MainActions::CommandToDataMap MainActions::_commandsForThisState
@@ -56,7 +56,7 @@ bool MainActions::cashOut(Args& args)
     std::unordered_map<Banknote, int> res;
     if (ATM::getATM().getSumAsBanknotes(sum, res))
     {
-        std::shared_ptr<Transaction> tr = Transactions::getInstance().makeTransaction(
+        std::shared_ptr<Transaction> tr = TransactionManager::getInstance().makeTransaction(
             Transaction::TransactionType::CASH_OUT, card, sum);
         tr->print(std::cout);
         if (tr->isSuccessfull())
@@ -105,7 +105,7 @@ bool MainActions::cashIn(Args& args)
     }
     ATM::getATM().addMoney(banknote, numOfBanknotes);
     ClientCard* card = dynamic_cast<ClientCard*>(&*ATM::getATM().getCurrentCard());
-    Transactions::getInstance().makeTransaction(Transaction::TransactionType::CASH_IN, card, numOfBanknotes * banknote)
+    TransactionManager::getInstance().makeTransaction(Transaction::TransactionType::CASH_IN, card, numOfBanknotes * banknote)
                                ->print(std::cout);
     return false;
 }
@@ -123,7 +123,7 @@ bool MainActions::changePassword(Args& args)
         std::cout << "Password was successfully changed\n";
         ClientCard* cc = dynamic_cast<ClientCard*>(&*ATM::getATM().getCurrentCard());
         cc->setPin(newPassword);
-        ClientCards::getInstance().modifyCardData(*cc);
+        ClientCardManager::getInstance().modifyCardData(*cc);
         return false;
     }
     return false;
@@ -162,7 +162,7 @@ bool MainActions::transferMoneyToAnotherAccount(Args& args)
     if (!utils::isInt(args[1]))
         std::cout << "Card number must contain only digits!\n";
     else
-        Transactions::getInstance().makeTransaction(Transaction::TransactionType::CARD_TRANSFER, card, amountOfMoney,
+        TransactionManager::getInstance().makeTransaction(Transaction::TransactionType::CARD_TRANSFER, card, amountOfMoney,
                                                   cardid)->print(std::cout);
     return false;
 }
@@ -197,7 +197,7 @@ bool MainActions::transferMoneyToPhoneAccount(Args& args)
         std::cout << "Second argument has to be a phone number\n";
         return false;
     }
-    Transactions::getInstance().makeTransaction(card, amountOfMoney, args[1])->
+    TransactionManager::getInstance().makeTransaction(card, amountOfMoney, args[1])->
                                 print(std::cout);
     return false;
 }
@@ -227,7 +227,7 @@ bool MainActions::transferMoneyToCharity(Args& args)
         std::cout << "Not enough money on your balance\n";
         return false;
     }
-    Transactions::getInstance().makeTransaction(Transaction::TransactionType::CHARITY_TRANSFER, card, amountOfMoney)->
+    TransactionManager::getInstance().makeTransaction(Transaction::TransactionType::CHARITY_TRANSFER, card, amountOfMoney)->
                                 print(std::cout);
     return false;
 }
@@ -241,7 +241,7 @@ bool MainActions::showTransactions(Args& args)
     }
 
     std::vector<Transaction> res;
-    Transactions::getInstance().findTransactionsByClientNumber(res, ATM::getATM().getCurrentCard()->getNumber());
+    TransactionManager::getInstance().findTransactionsByClientNumber(res, ATM::getATM().getCurrentCard()->getNumber());
     if(numOfTransactionsToDisplay <= 0 || numOfTransactionsToDisplay >= res.size())
     {
         numOfTransactionsToDisplay = res.size();

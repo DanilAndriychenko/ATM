@@ -1,7 +1,7 @@
 ﻿#include "Authorization.h"
 #include "Maintenance.h"
 #include "../Entities/ATM.h"
-#include "../Entities/Cards.h"
+#include "../Entities/CardManager.h"
 
 #include <iostream>
 
@@ -43,7 +43,7 @@ bool Authorization::authorize(Args& arguments)
     int id, password;
     if (utils::isID(arguments[0], id) && utils::isPassword(arguments[1], password))
     {
-        if (const std::shared_ptr<ClientCard> card = ClientCards::getInstance().findCardByNumber(id))
+        if (const std::shared_ptr<ClientCard> card = ClientCardManager::getInstance().findCardByNumber(id))
         {
             if(card->getPin() != password)
             {
@@ -59,7 +59,7 @@ bool Authorization::authorize(Args& arguments)
             std::cout << "Welcome " << card->getName() << "!\n";
             return true;
         }
-        if (const std::shared_ptr<AdminCard> card = AdminCards::getInstance().findCardByNumber(id))
+        if (const std::shared_ptr<AdminCard> card = AdminCardManager::getInstance().findCardByNumber(id))
         {
             if(card->getPin() != password)
             {
