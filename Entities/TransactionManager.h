@@ -1,16 +1,16 @@
 #pragma once
 #include "Transaction.h"
 
-class Transactions
+class TransactionManager
 {
 public:
-	static Transactions& getInstance()
+	static TransactionManager& getInstance()
 	{
-		static Transactions instance(TRANSACTIONS_PATH);
+		static TransactionManager instance(TRANSACTIONS_PATH);
 		return instance;
 	}
 
-	~Transactions() {}
+	~TransactionManager() {}
 
 	const std::shared_ptr<Transaction> makeTransaction(Transaction::TransactionType type, ClientCard* sender, const int64_t sum, const int receiver = 111);
 
@@ -22,9 +22,9 @@ public:
 
 
 private:
-	Transactions(const std::string& filePath);
-	Transactions(const Transactions&) = delete;
-	void operator=(const Transactions&) = delete;
+	TransactionManager(const std::string& filePath);
+	TransactionManager(const TransactionManager&) = delete;
+	void operator=(const TransactionManager&) = delete;
 	std::string _filePath;
 	rapidjson::Document _doc;
 };

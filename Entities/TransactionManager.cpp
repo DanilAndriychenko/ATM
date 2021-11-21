@@ -1,7 +1,7 @@
-#include "Transactions.h"
+#include "TransactionManager.h"
 
 
-Transactions::Transactions(const std::string& filePath) : _filePath(filePath), _doc()
+TransactionManager::TransactionManager(const std::string& filePath) : _filePath(filePath), _doc()
 {
 	std::string buffer = utils::getStringBuffer(filePath);
 	InitDocument(buffer, _doc);
@@ -9,8 +9,7 @@ Transactions::Transactions(const std::string& filePath) : _filePath(filePath), _
 		throw Exceptions::DeserializeException("Document is not an array!");
 }
 
-//add operation with banknote bank??!!!!!
-const std::shared_ptr<Transaction> Transactions::makeTransaction(Transaction::TransactionType type, ClientCard* sender, const int64_t sum, const int receiver)
+const std::shared_ptr<Transaction> TransactionManager::makeTransaction(Transaction::TransactionType type, ClientCard* sender, const int64_t sum, const int receiver)
 {
 	std::shared_ptr<Transaction> ptr = std::make_shared<Transaction>(type,
 																	sender,
@@ -21,7 +20,7 @@ const std::shared_ptr<Transaction> Transactions::makeTransaction(Transaction::Tr
 	return ptr;
 }
 
-const std::shared_ptr<Transaction> Transactions::makeTransaction(ClientCard* sender, const int64_t sum, const std::string& phone_number)
+const std::shared_ptr<Transaction> TransactionManager::makeTransaction(ClientCard* sender, const int64_t sum, const std::string& phone_number)
 {
 	std::shared_ptr<Transaction> ptr = std::make_shared<Transaction>(Transaction::TransactionType::PHONE_TRANSFER, 
 																	sender, 
@@ -32,7 +31,7 @@ const std::shared_ptr<Transaction> Transactions::makeTransaction(ClientCard* sen
 	return ptr;
 }
 
-void Transactions::findTransactionsByClientNumber(std::vector<Transaction>& vec, const int numb)
+void TransactionManager::findTransactionsByClientNumber(std::vector<Transaction>& vec, const int numb)
 {
 	if (!vec.empty())
 		vec.clear();
@@ -43,7 +42,7 @@ void Transactions::findTransactionsByClientNumber(std::vector<Transaction>& vec,
 	}
 }
 
-const std::shared_ptr<Transaction> Transactions::findTransactionByID(const int64_t id)
+const std::shared_ptr<Transaction> TransactionManager::findTransactionByID(const int64_t id)
 {
 	for (rapidjson::Value::ConstValueIterator itr = _doc.Begin(); itr != _doc.End(); ++itr)
 	{

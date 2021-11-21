@@ -38,8 +38,10 @@ void Transaction::initTransaction()
 
 	if (bankID == _sender->getNumber() % 1000 || _type == TransactionType::CHARITY_TRANSFER)
 		_currentComission = 0.0;
+	else
+		_currentComission = commision;
 	if (_type == TransactionType::PHONE_TRANSFER)
-		_currentComission = commision + 0.01;
+		_currentComission += 0.01;
 	//consider rounding
 	int diff = round(_sum * _currentComission);
 	
@@ -50,7 +52,7 @@ void Transaction::initTransaction()
 		return;
 	}
 
-	ClientCards& cards = ClientCards::getInstance();
+	ClientCardManager& cards = ClientCardManager::getInstance();
 
 	if (_type == TransactionType::CARD_TRANSFER)
 	{
@@ -58,7 +60,13 @@ void Transaction::initTransaction()
 		if (reciev_ptr.get() == nullptr)
 		{
 			_isSuccessfull = false;
-			_errorMsg = "Reciever doesn`t exist";
+			_errorMsg = "Receiver doesn`t exist";
+			return;
+		}
+		if (reciev_ptr->isExpired())
+		{
+			_isSuccessfull = false;
+			_errorMsg = "Receiver card is expired";
 			return;
 		}
 		reciev_ptr->setBalance(reciev_ptr->getBalance() + _sum);

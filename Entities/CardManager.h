@@ -3,26 +3,26 @@
 #include "AdminCard.h"
 #include "ClientCard.h"
 
-class AbstractCards
+class AbstractCardManager
 {
 public:
-	virtual ~AbstractCards() = 0;
+	virtual ~AbstractCardManager() = 0;
 protected:
 	template<class T>
-	class Cards;
+	class TemplateCardManager;
 };
 
 
-class ClientCards final : private AbstractCards
+class ClientCardManager final : private AbstractCardManager
 {
 public:
-	static ClientCards& getInstance()
+	static ClientCardManager& getInstance()
 	{
-		static ClientCards instance;
+		static ClientCardManager instance;
 		return instance;
 	}
 
-	~ClientCards();
+	~ClientCardManager();
 
 	const std::shared_ptr<ClientCard> findCardByNumber(const int numb);
 
@@ -30,24 +30,24 @@ public:
 
 	bool modifyCardData(const ClientCard& modified);
 
-	ClientCards(const ClientCards&) = delete;
-	void operator=(const ClientCards&) = delete;
+	ClientCardManager(const ClientCardManager&) = delete;
+	void operator=(const ClientCardManager&) = delete;
 
 private:
-	ClientCards();
-	Cards<ClientCard>* _cards;
+	ClientCardManager();
+	TemplateCardManager<ClientCard>* _cards;
 };
 
-class AdminCards final : private AbstractCards
+class AdminCardManager final : private AbstractCardManager
 {
 public:
-	static AdminCards& getInstance()
+	static AdminCardManager& getInstance()
 	{
-		static AdminCards instance;
+		static AdminCardManager instance;
 		return instance;
 	}
 
-	~AdminCards();
+	~AdminCardManager();
 
 	const std::shared_ptr<AdminCard> findCardByNumber(const int numb);
 
@@ -55,24 +55,23 @@ public:
 
 	bool modifyCardData(const AdminCard& modified);
 
-	AdminCards(const AdminCards&) = delete;
-	void operator=(const AdminCards&) = delete;
+	AdminCardManager(const AdminCardManager&) = delete;
+	void operator=(const AdminCardManager&) = delete;
 
 private:
-	AdminCards();
-	Cards<AdminCard>* _cards;
+	AdminCardManager();
+	TemplateCardManager<AdminCard>* _cards;
 };
 
 
 template <class T>
-class AbstractCards::Cards
+class AbstractCardManager::TemplateCardManager
 {
-//	using deserializationFunct = const std::shared_ptr<T>(*)(const rapidjson::Value&);
 public:
 	
-	Cards(const std::string& filePath);
+	TemplateCardManager(const std::string& filePath);
 
-	~Cards() {}
+	~TemplateCardManager() {}
 
 	const std::shared_ptr<T> findCardByNumber(const int numb);
 
@@ -80,8 +79,8 @@ public:
 
 	bool modifyCardData(const T& modified);
 
-	Cards(Cards const&) = delete;              // Don't Implement
-	void operator=(Cards const&) = delete; // Don't implement
+	TemplateCardManager(TemplateCardManager const&) = delete;              // Don't Implement
+	void operator=(TemplateCardManager const&) = delete; // Don't implement
 
 private:
 
@@ -92,7 +91,7 @@ private:
 
 ////////class implementation////////
 template<class T>
-AbstractCards::Cards<T>::Cards(const std::string& filePath) : _filePath(filePath), _doc()
+AbstractCardManager::TemplateCardManager<T>::TemplateCardManager(const std::string& filePath) : _filePath(filePath), _doc()
 {
 	std::string buffer = utils::getStringBuffer(filePath);
 	InitDocument(buffer, _doc);
@@ -101,19 +100,18 @@ AbstractCards::Cards<T>::Cards(const std::string& filePath) : _filePath(filePath
 }
 
 template <class T>
-void AbstractCards::Cards<T>::findAllCards(std::vector<T>& vec) const
+void AbstractCardManager::TemplateCardManager<T>::findAllCards(std::vector<T>& vec) const
 {
 	if (!vec.empty())
 		vec.clear();
 	for (rapidjson::Value::ConstValueIterator itr = _doc.Begin(); itr != _doc.End(); ++itr)
 	{
 		vec.push_back(*T::Deserialize(*itr));
-		//vec.push_back(*(_deserialize(*itr).get()));
 	}
 }
 
 template <class T>
-const std::shared_ptr<T> AbstractCards::Cards<T>::findCardByNumber(const int numb)
+const std::shared_ptr<T> AbstractCardManager::TemplateCardManager<T>::findCardByNumber(const int numb)
 {
 	for (rapidjson::Value::ConstValueIterator itr = _doc.Begin(); itr != _doc.End(); ++itr)
 	{
@@ -124,7 +122,7 @@ const std::shared_ptr<T> AbstractCards::Cards<T>::findCardByNumber(const int num
 }
 
 template <class T>
-bool AbstractCards::Cards<T>::modifyCardData(const T& modified)
+bool AbstractCardManager::TemplateCardManager<T>::modifyCardData(const T& modified)
 {
 
 	for (int idx = 0; idx < (int)_doc.Size(); idx++)

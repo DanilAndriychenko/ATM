@@ -26,11 +26,11 @@ std::shared_ptr<State> Authorization::getNextState()
 #ifdef NDEBUG
     std::cout << "movingToNextState\n";
 #endif
-    if (ATM::getATM().getCurrentCard())
+    if (ATM::getATM().getCurrentCard()->isAdmin())
     {
-        return std::make_shared<MainActions>();
+        return std::make_shared<Maintenance>();
     }
-    return std::make_shared<Maintenance>();
+    return std::make_shared<MainActions>();
 }
 
 bool Authorization::authorize(Args& arguments)
@@ -45,12 +45,12 @@ bool Authorization::authorize(Args& arguments)
     {
         if (const std::shared_ptr<ClientCard> card = ClientCards::getInstance().findCardByNumber(id))
         {
-            if (card->getPin() != password)
+            if(card->getPin() != password)
             {
                 std::cout << "Incorrect password\n";
                 return false;
             }
-            if (card->isExpired())
+            if(card->isExpired())
             {
                 std::cout << "Sorry your card is expired\n";
                 return false;
@@ -61,15 +61,15 @@ bool Authorization::authorize(Args& arguments)
         }
         if (const std::shared_ptr<AdminCard> card = AdminCards::getInstance().findCardByNumber(id))
         {
-            if (card->getPin() != password)
+            if(card->getPin() != password)
             {
                 std::cout << "Incorrect password\n";
                 return false;
             }
+            ATM::getATM().setCurrentCard(card);
             std::cout << "Authorized with exclusive rights\n";
-            return true;
+            return true;            
         }
-        std::cout << "There is no such a card, please try again\n";
     }
     return false;
 }
