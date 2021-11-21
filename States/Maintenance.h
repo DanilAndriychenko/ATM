@@ -5,6 +5,8 @@
 class Maintenance final : public State
 {
 public:
+	friend class Tester;
+	
 	explicit Maintenance(): State(_commandToDataMap) {}
 	Maintenance(const Maintenance& other) = delete;
 	Maintenance& operator=(const Maintenance& other) = delete;

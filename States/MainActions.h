@@ -4,6 +4,8 @@
 class MainActions : public State
 {
 public:
+	friend class Tester;
+    
     MainActions() : State(_commandsForThisState){}
     ~MainActions() override{}
     MainActions(const MainActions&) = delete;

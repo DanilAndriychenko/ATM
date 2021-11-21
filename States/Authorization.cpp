@@ -67,6 +67,7 @@ bool Authorization::authorize(Args& arguments)
                 return false;
             }
             std::cout << "Authorized with exclusive rights\n";
+            ATM::getATM().setCurrentCard(nullptr);
             return true;
         }
         std::cout << "No such card\n";

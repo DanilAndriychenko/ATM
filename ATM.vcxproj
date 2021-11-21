@@ -241,6 +241,7 @@
 		<ClCompile Include="States\MainActions.cpp" />
 		<ClCompile Include="States\Maintenance.cpp" />
 		<ClCompile Include="States\State.cpp" />
+		<ClCompile Include="Tests\Tester.cpp" />
 		<ClCompile Include="Utils\Utils.cpp" />
 	</ItemGroup>
 	<ItemGroup>
@@ -295,6 +296,7 @@
 		<ClInclude Include="States\MainActions.h" />
 		<ClInclude Include="States\Maintenance.h" />
 		<ClInclude Include="States\State.h" />
+		<ClInclude Include="Tests\Tester.h" />
 		<ClInclude Include="Utils\Utils.h" />
 	</ItemGroup>
 	<ItemGroup>

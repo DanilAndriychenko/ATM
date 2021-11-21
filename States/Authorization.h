@@ -4,6 +4,7 @@
 class Authorization : public State
 {
 public:
+	friend class Tester;
     
     static constexpr int numOfDigitsInLogin = 5;
     static constexpr int numOfDigitsInPassword = 4;

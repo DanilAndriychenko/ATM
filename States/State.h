@@ -12,6 +12,8 @@ using std::string;
 class State
 {
 public:
+	friend class Tester;
+
 	// If returns true then move to new state
 	using CommandPtr = bool (*)(Args&);
 	struct CommandData;
