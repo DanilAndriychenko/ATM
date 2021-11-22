@@ -149,18 +149,14 @@ bool MainActions::transferMoneyToAnotherAccount(Args& args)
         return false;
     }
     ClientCard* card = &*ATM::getATM().getCurrentCard();
-    if (card->getBalance() < amountOfMoney)
-    {
-        std::cout << "Not enough money on your balance\n";
-        return false;
-    }
+  
     int cardID = 0;
     if (!utils::isID(args[1], cardID))
     {
         return false;
     }
     TransactionManager::getInstance().makeTransaction(Transaction::TransactionType::CARD_TRANSFER, card, amountOfMoney,
-                                                cardID);
+                                                cardID)->print(std::cout);
     return false;
 }
 
@@ -184,18 +180,13 @@ bool MainActions::transferMoneyToPhoneAccount(Args& args)
         return false;
     }
     ClientCard* card = &*ATM::getATM().getCurrentCard();
-    if (card->getBalance() < amountOfMoney)
-    {
-        std::cout << "Not enough money on your balance\n";
-        return false;
-    }
+ 
     if (!utils::matchPhoneNumber(args[1]))
     {
         std::cout << "Second argument has to be a phone number\n";
         return false;
     }
-    TransactionManager::getInstance().makeTransaction(Transaction::TransactionType::PHONE_TRANSFER, card, amountOfMoney)->
-                                print(std::cout);
+    TransactionManager::getInstance().makeTransaction(card, amountOfMoney, args[1])->print(std::cout);
     return false;
 }
 
@@ -219,11 +210,6 @@ bool MainActions::transferMoneyToCharity(Args& args)
         return false;
     }
     ClientCard* card = &*ATM::getATM().getCurrentCard();
-    if (card->getBalance() < amountOfMoney)
-    {
-        std::cout << "Not enough money on your balance\n";
-        return false;
-    }
     TransactionManager::getInstance().makeTransaction(Transaction::TransactionType::CHARITY_TRANSFER, card, amountOfMoney)->
                                 print(std::cout);
     return false;

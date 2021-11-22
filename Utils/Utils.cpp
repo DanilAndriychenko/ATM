@@ -58,7 +58,7 @@ bool utils::isDouble(const std::string& str)
 
 bool utils::isInt(const std::string& str)
 {
-	return std::regex_match(str, std::regex("[-+]?[\\d]+"));
+	return std::regex_match(str, std::regex("[-]?[\\d]+"));
 }
 
 void utils::toLowerCase(std::string& str)
